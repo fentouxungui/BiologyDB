@@ -1,0 +1,512 @@
+---
+title: "数据库预处理"
+author: "Zhang Yongchao"
+date: "2022-08-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rtracklayer)
+```
+
+
+```{r}
+save.Rda <- FALSE
+```
+
+
+## GTF核心文件预处理
+
+> Gene transfer format - Wikipedia
+The Gene transfer format (GTF) is a file format used to hold information about gene structure. It is a tab-delimited text format based on the general feature format (GFF), but contains some additional conventions specific to gene information.
+
+> What is the difference between GENCODE and Ensembl annotation?
+The GENCODE annotation is made by merging the manual gene annotation produced by the Ensembl-Havana team and the Ensembl-genebuild automated gene annotation. The GENCODE annotation is the default gene annotation displayed in the Ensembl browser. The GENCODE releases coincide with the Ensembl releases, although we can skip an Ensembl release if there is no update to the annotation with respect to the previous release. In practical terms, the GENCODE annotation is essentially identical to the Ensembl annotation.
+
+> What is the difference between GENCODE GTF and Ensembl GTF?
+The gene annotation is the same in both files. The only exception is that the genes which are common to the human chromosome X and Y PAR regions can be found twice in the GENCODE GTF, while they are shown only for chromosome X in the Ensembl file.
+In addition, the GENCODE GTF contains a number of attributes not present in the Ensembl GTF, including annotation remarks, APPRIS tags and other tags highlighting transcripts experimentally validated by the GENCODE project or 3-way-consensus pseudogenes (predicted by Havana, Yale and UCSC). See our complete list of tags for more information.
+Please note that the Ensembl GTF covers the annotation in all sequence regions whereas GENCODE produces a similar file but also a GTF file with the annotation on the reference chromosomes only.
+
+### 下载GTF
+
+url: https://www.gencodegenes.org/human/
+
+Release 41 (GRCh38.p13)
+Comprehensive gene annotation - PRI
+- It contains the comprehensive gene annotation on the primary assembly (chromosomes and scaffolds) sequence regions
+- This is a superset of the main annotation file
+
+```{r}
+# options(timeout = 600) # time out set to 10 mins
+# gtf.link <- "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/gencode.v41.primary_assembly.annotation.gtf.gz"
+# download.file(gtf.link, destfile = "../../inst/extdata/GeneCode-Genes/gencode.v41.primary_assembly.annotation.gtf.gz")
+```
+
+### 预处理
+
+```{r}
+genecode.gtf <- rtracklayer::import("../../inst/extdata/GeneCode-Genes/gencode.v41.primary_assembly.annotation.gtf.gz")
+GENCODE <- list()
+GENCODE[["human"]] = as.data.frame(genecode.gtf)
+dim(GENCODE)
+```
+
+```{r}
+if (save.Rda) {
+  save(GENCODE, file = "../data/GENCODE.rda", compress = "xz")
+}
+```
+
+
+## The Human Transcription Factors
+
+url: http://humantfs.ccbr.utoronto.ca/; http://humantfs.ccbr.utoronto.ca/download.php
+
+Reference: Lambert, S. A., Jolma, A., Campitelli, L. F., Das, P. K., Yin, Y., Albu, M., ... & Weirauch, M. T. (2018). The human transcription factors. *Cell*, *172*(4), 650-665.
+
+**1639 known and likely human TFs and their motifs (version 1.01)**
+
+> Candidate proteins were manually examined by a panel of experts based on available data. Proteins with **experimentally demonstrated DNA binding specificity** were considered **TFs**. Other proteins, such as **co-factors and RNA binding proteins**, were classified as **non-TFs**. All proteins (both TFs and non-TFs) are contained in the database, along with the associated evidence. Accompanying DNA binding motifs can be obtained through the links below (http://cisbp.ccbr.utoronto.ca/).
+
+> We manually examined 2765 proteins compiled by combining putative TF lists from several sources: previous studies (Fulton et al., 2009; Vaquerizas et al., 2009), domain searches (using HMMs and parameters from CisBP (Weirauch et al., 2014) and Interpro (Hunter et al., 2009)), Gene Ontology (Ashburner et al., 2000; Gene Ontology, 2015), and crystal and NMR structures of proteins in complex with DNA (PDB, (Berman et al., 2000)). We then assigned two curators to classify the likelihood of each protein being a TF (TF with a known motif, TF with an inferred motif, likely TF, ssDNA/RNA binding protein, or unlikely TF), and its DNA binding mode (binds as a monomer or homodimer, binds as an obligate heteromer, binds with low specificity, or does not bind DNA). Each curator also took brief notes with citations supporting their assessments. Using data from CisBP and other sources, we recorded whether motifs are known for each TF, along with whether DNA-protein structures are available. We considered global sequence alignments and known DNA binding residues to make decisions for poorly characterized proteins within families where only a subset bind DNA (e.g., ARID, HMG, and Myb (Boyer et al., 2004)). Three senior authors (TRH, MTW, JT) resolved cases of disagreement between reviewers, and reviewed all cases where both curators agreed that a protein without a known DNA-binding domain is likely a bona fide TF. Further details are available in the associated publication (see How to cite page).
+
+
+url: http://humantfs.ccbr.utoronto.ca/; http://humantfs.ccbr.utoronto.ca/download.php
+
+
+### 下载
+
+```{r}
+# save.dir <- "../../inst/extdata/The-Human-Transcription-Factors"
+# dir.create(save.dir, recursive = TRUE)
+```
+
+**Current lists of human TFs and their motifs (v1.01)**
+
+1. Human TFs
+
+```{r}
+# full.database <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/DatabaseExtract_v_1.01.csv"
+# full.database.readme <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/Readme_TFs_v_1.01.txt"
+# tf.gene.names <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/TF_names_v_1.01.txt"
+# tf.ensembl.ids <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/TFs_Ensembl_v_1.01.txt"
+# tfs.associated.with.disease <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/TF-disease-data_Fig4.xlsx" # 下载的无法打开，可使用浏览器重新下载
+# tfs.links <- c("full.database","full.database.readme", "tf.gene.names", "tf.ensembl.ids", "tfs.associated.with.disease")
+# for (i in tfs.links) {
+#   download.file(get(i), destfile = paste0(save.dir, "/",basename(get(i))))
+# }
+```
+
+2. Human TF motifs
+
+```{r}
+# motif.list <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/Human_TF_MotifList_v_1.01.csv"
+# motif.list.readme <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/README_Motifs_v_1.01.txt"
+# motif.pwm.files <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/PWMs.zip" # not used!
+# motif.pwm.files.readme <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/README_PWMs_v_1.01.txt"
+# motif.similarity.matrix <- "http://humantfs.ccbr.utoronto.ca/download/v_1.01/MotifSimMatrix.csv"
+# tfs.motif.links <- c("motif.list", "motif.list.readme", "motif.pwm.files", "motif.pwm.files.readme", "motif.similarity.matrix")
+# for (i in tfs.motif.links) {
+#   download.file(get(i), destfile = paste0(save.dir, "/",basename(get(i))))
+# }
+```
+
+**DBDs**
+
+Not downloaded!
+
+
+**Supplemental Material from the original publication**
+
+These are the original supplemental files provided with the publication. It is recommended to use the TF and motif lists above, which are more up-to-date
+
+Not downloaded!
+
+### 预处理
+
+```{r}
+HumanTFs <- list()
+HumanTFs[["TFs"]][["tf.full.database"]] <- read.csv("../../inst/extdata/The-Human-Transcription-Factors/DatabaseExtract_v_1.01.csv", stringsAsFactors = FALSE)
+HumanTFs[["TFs"]][["tf.full.database"]] <- HumanTFs[["TFs"]][["tf.full.database"]][,-1]
+HumanTFs[["TFs"]][["tf.gene.names"]] <- read.table("../../inst/extdata/The-Human-Transcription-Factors/TF_names_v_1.01.txt", stringsAsFactors = FALSE)[,1]
+HumanTFs[["TFs"]][["tf.ensembl.ids"]] <- read.table("../../inst/extdata/The-Human-Transcription-Factors/TFs_Ensembl_v_1.01.txt", stringsAsFactors = FALSE)[,1]
+HumanTFs[["TFs"]][["tfs.associated.with.disease"]] <- readxl::read_excel("../../inst/extdata/The-Human-Transcription-Factors/TF-disease-data_Fig4.xlsx")
+```
+
+```{r}
+HumanTFs[["TF.motifs"]][["motif.list"]] <- read.csv("../../inst/extdata/The-Human-Transcription-Factors/Human_TF_MotifList_v_1.01.csv", stringsAsFactors = FALSE)
+tmp <- read.csv("../../inst/extdata/The-Human-Transcription-Factors/MotifSimMatrix.csv", stringsAsFactors = FALSE)
+rownames(tmp) <- tmp[,1]
+HumanTFs[["TF.motifs"]][["motif.similarity.matrix"]] <- tmp[,-1]
+```
+
+```{r}
+str(HumanTFs, max.level = 2)
+if (save.Rda) {
+  save(HumanTFs, file = "../data/HumanTFs.rda", compress = "xz")
+}
+```
+
+## Animal TF DB 3.0
+
+url: http://bioinfo.life.hust.edu.cn/AnimalTFDB/
+
+> AnimalTFDB is a comprehensive database including classification and annotation of genome-wide transcription factors (TFs), and transcription cofactors in 97 animal genomes. The TFs are further classified into 73 families based on their DNA-binding domain (DBD) and cofactors are classified into 83 families and 6 categories.
+
+HumanTFDB portal: http://bioinfo.life.hust.edu.cn/HumanTFDB/
+
+### 下载数据
+
+手动下载链接： http://bioinfo.life.hust.edu.cn/HumanTFDB/#!/download
+右键 - 链接另存为
+
+
+```{r}
+AnimalTFDB3 <- list()
+```
+
+```{r}
+AnimalTFDB3_batch_read <- function(ADir){
+  files <- list.files(ADir,full.names = TRUE)
+  list.names <- gsub("\\..*$","",gsub(paste0(basename(ADir),"_"),"",basename(files)))
+  res <- list()
+  read_depends <- function(AfilePath){
+    splited.name <- unlist(strsplit(basename(AfilePath), split = ".", fixed = TRUE))
+    postfix <- splited.name[length(splited.name)]
+    if (postfix == "txt") {
+      return(read.delim(AfilePath,stringsAsFactors = FALSE))
+    }else if(postfix == "fasta"){
+      seqinr::read.fasta(AfilePath)
+    }else{
+      stop("无效的文件后缀名！")
+    }
+  }
+  for (i in 1:length(files)) {
+    res[[list.names[i]]] <- read_depends(files[i])
+  }
+  return(res)
+}
+```
+
+```{r}
+for (i in list.dirs("../../inst/extdata/AnimalTFDB3",full.names = TRUE)[-1]) {
+  AnimalTFDB3[[basename(i)]] <- AnimalTFDB3_batch_read(i)
+} 
+```
+
+
+```{r}
+str(AnimalTFDB3, max.level = 2)
+if (save.Rda) {
+  save(AnimalTFDB3, file = "../data/AnimalTFDB3.rda", compress = "xz")
+}
+```
+
+
+## The IUPHAR/BPS Guide to PHARMACOLOGY
+
+url: https://www.guidetopharmacology.org/index.jsp
+
+Current Release Version 2022.2 (9th June 2022)
+
+> The International Union of Basic and Clinical Pharmacology (IUPHAR) / British Pharmacological Society (BPS) Guide to PHARMACOLOGY is an expert-curated resource of ligand-activity-target relationships, the majority of which come from high-quality pharmacological and medicinal chemistry literature. It is intended as a “one-stop shop” portal to pharmacological information and its main aim is to provide a searchable database with quantitative information on drug targets and the prescription medicines and experimental drugs that act on them. In future versions we plan to add resources for education and training in pharmacological principles and techniques along with research guidelines and overviews of key topics. We hope that the IUPHAR/BPS Guide to PHARMACOLOGY (abbreviated as GtoPdb) will be useful for researchers and students in pharmacology and drug discovery and provide the general public with accurate information on the basic science underlying drug action.
+
+> The information in the database is presented at two levels: the initial view or landing pages for each target family provide expert-curated overviews of the key properties and selective ligands and tool compounds available. For selected targets more detailed introductory chapters for each family are available along with curated information on the pharmacological, physiological, structural, genetic and pathophysiogical properties of each target. The database is enhanced with hyperlinks to additional information in other databases including Ensembl, UniProt, PubChem, ChEMBL and DrugBank, as well as curated chemical information and literature citations in PubMed.
+
+> The database will continue to expanded to include major areas of interest to pharmacology. One of our main goals is to provide information on all the targets of currently licensed drugs as well as other potential targets of interest.
+
+full datbase(dmp format, created with PostgreSQL version 9.2): https://www.guidetopharmacology.org/DATA/public_iuphardb_v2022.2.zip
+
+or 
+
+Read a description of the files: "https://www.guidetopharmacology.org/DATA/file_descriptions.txt"
+Download complete **target and family** list: https://www.guidetopharmacology.org/DATA/targets_and_families.csv
+Download complete **ligand** list: https://www.guidetopharmacology.org/DATA/ligands.csv
+Download **ligand ID mapping** file: https://www.guidetopharmacology.org/DATA/ligand_id_mapping.csv
+Download SDF file of **ligands** with SMILES: https://www.guidetopharmacology.org/DATA/all_ligands.sdf
+Download detailed **endogenous/natural ligand** list: https://www.guidetopharmacology.org/DATA/detailed_endogenous_ligands.csv
+Download condensed **endogenous/natural ligand** list: https://www.guidetopharmacology.org/DATA/endogenous_ligands.csv
+Download **approved drugs with primary targets** list: https://www.guidetopharmacology.org/DATA/approved_drug_primary_target_interactions.csv
+Download complete **peptide ligand** list: https://www.guidetopharmacology.org/DATA/peptides.csv
+Download all interaction data for ligands and targets:https://www.guidetopharmacology.org/DATA/interactions.csv
+Download a file mapping Guide to PHARMACOLOGY target and peptide ligand IDs and URLs to HGNC gene IDs and symbols: https://www.guidetopharmacology.org/DATA/GtP_to_HGNC_mapping.csv
+Download a file mapping Guide to PHARMACOLOGY target IDs and URLs to UniProt accessions: https://www.guidetopharmacology.org/DATA/GtP_to_UniProt_mapping.csv
+
+```{r}
+target.and.family <- read.csv("../../inst/extdata/GuideToPharmacology/targets_and_families.csv", stringsAsFactors = FALSE, skip = 1)
+ligand <- read.csv("../../inst/extdata/GuideToPharmacology/ligands.csv", stringsAsFactors = FALSE, skip = 1)
+ligand.ID.mapping <- read.csv("../../inst/extdata/GuideToPharmacology/ligand_id_mapping.csv", stringsAsFactors = FALSE, skip = 1)
+detailed.endogenous.ligand <-  read.csv("../../inst/extdata/GuideToPharmacology/detailed_endogenous_ligands.csv", stringsAsFactors = FALSE, skip = 1)
+condensed.endogenous.ligand <- read.csv("../../inst/extdata/GuideToPharmacology/endogenous_ligands.csv", stringsAsFactors = FALSE, skip = 1)
+approved.drugs.with.primary.targets <- read.csv("../../inst/extdata/GuideToPharmacology/approved_drug_primary_target_interactions.csv", stringsAsFactors = FALSE, skip = 1)
+complete.peptide.ligand <-  read.csv("../../inst/extdata/GuideToPharmacology/peptides.csv", stringsAsFactors = FALSE, skip = 1)
+all.ligands.and.targets.interactions <- read.csv("../../inst/extdata/GuideToPharmacology/interactions.csv", stringsAsFactors = FALSE, skip = 1)
+mapping.to.HGNC <-  read.csv("../../inst/extdata/GuideToPharmacology/GtP_to_HGNC_mapping.csv", stringsAsFactors = FALSE, skip = 1)
+mapping.to.UniProt <- read.csv("../../inst/extdata/GuideToPharmacology/GtP_to_UniProt_mapping.csv", stringsAsFactors = FALSE, skip = 1)
+```
+
+```{r}
+items <- c("target.and.family", "ligand", "ligand.ID.mapping", "detailed.endogenous.ligand", "condensed.endogenous.ligand", "approved.drugs.with.primary.targets", "complete.peptide.ligand", "complete.peptide.ligand",  "all.ligands.and.targets.interactions", "mapping.to.HGNC", "mapping.to.UniProt")
+
+GuideToPHARMACOLOGY <- list()
+for (i in items) {
+  GuideToPHARMACOLOGY[[i]] <- get(i)
+}
+str(GuideToPHARMACOLOGY, max.level = 1)
+```
+
+```{r}
+if (save.Rda) {
+  save(GuideToPHARMACOLOGY, file = "../data/GuideToPHARMACOLOGY.rda", compress = "xz")
+}
+```
+
+**target.and.family**的种类：
+
+```{r}
+table(target.and.family$Type)
+```
+**Ligand**的类型：
+
+```{r}
+table(ligand$Type)
+```
+
+**detailed.endogenous.ligand**中Ligand的类型：
+
+```{r}
+table(detailed.endogenous.ligand$Ligand.Type)
+```
+
+# THE-HUMAN-PROTEIN-ATLAS
+
+```{r}
+HPA <- read.delim("~/reference/Biology-Database/Secretome-and-Membrane-proteome/THE-HUMAN-PROTEIN-ATLAS/19670-All-Genes.tsv",stringsAsFactors = FALSE)
+
+HPA <- HPA[,c("Ensembl","Protein.class", "Biological.process", "Molecular.function","Disease.involvement",
+              "RNA.tissue.specificity","RNA.tissue.distribution", "RNA.tissue.specificity.score", "RNA.tissue.specific.NX",
+              "RNA.single.cell.type.specificity", "RNA.single.cell.type.distribution", "RNA.single.cell.type.specificity.score", "RNA.single.cell.type.specific.NX", 
+              "RNA.cancer.specificity", "RNA.cancer.distribution",  "RNA.cancer.specificity.score", "RNA.cancer.specific.FPKM", 
+              "RNA.brain.regional.specificity","RNA.brain.regional.specificity.score", "RNA.brain.regional.specific.NX",
+              "Subcellular.location","Subcellular.main.location","Secretome.location" )]
+colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
+colnames(HPA)[1] <- "Ensembl"
+```
+
+merge data
+
+```{r}
+Gene.info <- base::merge(Gene.info, HPA, by = "Ensembl",all.x = TRUE)
+```
+
+# Save results
+
+```{r}
+Gene.info[is.na(Gene.info)] <- ""
+saveRDS(Gene.info,file = "Human.Gene.infos.By.Ensembl.rds")
+```
+
+
+## THE HUMAN PROTEIN ATLAS
+
+url: https://www.proteinatlas.org/
+
+直接下载： https://www.proteinatlas.org/about/download
+或者：
+R包：hpar, https://bioconductor.org/packages/release/bioc/vignettes/hpar/inst/doc/hpar.html
+
+```{r eval=FALSE}
+# BiocManager::install("hpar")
+library(hpar)
+```
+
+介绍： http://www.51xxziyuan.com/55/2153.html
+
+人类蛋白免疫组化表达数据库，对于某一个蛋白免疫组化的结果呈现，数据库是分成了四个分类来呈现的，分别是：没有检测到、低表达、中表达以及高表达。这个数据库包括的模块有：组织表达情况、细胞定位情况、病理表达情况以及脑和血液的RNA表达情况。
+
+**1. 正常组织表达情况**
+
+在组织表达情况当中，我们可以看到这个蛋白的不同在不同的正常组织当中**mRNA和蛋白**的表达情况。其中mRNA的表达来自于GTEx数据库（256种组织类型），而免疫组化的表达是数据库成员自己用组织芯片来做的结果（来自44种人类正常组织）。其中对于某一个组织当中详细的免疫组化的染色情况，我们可以点击具体的部位，然后就可以看到其组织免疫组化的具体图片了。
+
+- 单细胞水平的蛋白定位
+- 基因是否富集到某一种组织中（表达特异性）
+- 哪些基因有相似的表达pattern
+
+https://www.proteinatlas.org/humanproteome/tissue/tissue+specific
+
+A total of 10986 genes are elevated in at least one of the analyzed tissues of which: 3106 are tissue enriched genes; 1628 are group enriched genes; 6252 are enhanced genes
+
+**蛋白水平**
+
+```{r}
+# 15323个基因蛋白水平的组织表达高低程度。
+# hpaNormalTissue
+data(hpaNormalTissue)
+# data(hpaNormalTissue16.1)
+dim(hpaNormalTissue)
+length(unique(hpaNormalTissue$Gene))
+head(hpaNormalTissue)
+```
+
+```{r}
+# 组织及其对应的细胞类型
+# sapply(hpaNormalTissue[,c("Tissue","Cell.type","Level")], unique)
+tissue.celltype <- t(as.data.frame.matrix(table(hpaNormalTissue$Tissue, hpaNormalTissue$Cell.type)))
+res.df <- character(length = length(colnames(tissue.celltype)))
+names(res) <- colnames(tissue.celltype)
+for (i in names(res)) {
+  res[i] <- paste0(rownames(tissue.celltype)[tissue.celltype[,i] != 0],collapse = ";")
+}
+as.data.frame(res)
+```
+
+```{r}
+hpaNormalTissue.downloaded <- read.delim("../../inst/extdata/The-Human-Protein-Atlas/normal_tissue.tsv",stringsAsFactors = FALSE)
+head(hpaNormalTissue.downloaded)
+dim(hpaNormalTissue.downloaded)
+length(unique(hpaNormalTissue.downloaded$Gene)) # 与R包里的hpaNormalTissue数据相比，基因数目一样，但貌似celltype有差别。建议使用R包里的数据
+```
+
+**癌症当中的表达情况**
+
+在这个部分，数据库汇总了TCGA当中这个基因在RNA-seq当中的表达情况以及数据库自己做的在一部分肿瘤组织当中免疫组化的情况。另外对于基因和预后的关系，这个数据库也分析了TCGA当中预后有意义的结果。同样的，对于某一个癌症所有免疫组化的结果。我们可以点击具体的癌种，就可以获得所有的图片了。
+
+
+```{r}
+data(hpaCancer)
+# data(hpaCancer16.1)
+head(hpaCancer)
+```
+
+
+https://www.proteinatlas.org/humanproteome/pathology
+https://www.proteinatlas.org/humanproteome/pathology/method
+
+17种人类癌症组织里的蛋白表达水平，以及KM分析（mRNA水平与生存时间）
+
+- 一个基因的mRNA表达水平是否能用于每种癌症病人的预后
+- 一个基因是否富集在特定癌症组织中（表达特异性）
+- （上调的）基因在每个癌症类型中的分类
+
+```{r}
+hpaPathology.downloaded <- read.delim("../../inst/extdata/The-Human-Protein-Atlas/pathology.tsv",stringsAsFactors = FALSE)
+head(hpaPathology.downloaded)
+dim(hpaPathology.downloaded)
+length(unique(hpaPathology.downloaded$Gene)) #
+```
+```{r}
+data("hpaCancer")
+head(hpaCancer)
+dim(hpaCancer)
+length(unique(hpaCancer$Gene)) # 与下载的数据是一致的
+```
+
+```{r}
+unique(hpaCancer$Cancer)
+```
+
+**亚细胞定位**
+
+```{r}
+data("hpaSubcellularLoc")
+head(hpaSubcellularLoc)
+```
+
+https://www.proteinatlas.org/about/assays+annotation#singlecell_rna
+
+
+```{r}
+data(rnaGeneTissue)
+head(rnaGeneTissue)
+```
+
+
+```{r}
+data(rnaGeneCellLine)
+# data(rnaGeneCellLine16.1)
+head(rnaGeneCellLine)
+```
+
+
+**2. 蛋白表达定位情况**
+
+在 CELL部分，我们可以看到这个蛋白在细胞当中的什么部位表达，通过蛋白的表达位置来确定这个蛋白可能具有的功能。
+
+Subcellular location data: Subcellular location of proteins based on immunofluorescently stained cells. The tab-separated file includes the following columns: Ensembl gene identifier (“Gene”), name of gene (“Gene name”), gene reliability score (“Reliability”), enhanced locations (“Enhanced”), supported locations (“Supported”), Approved locations (“Approved”), uncertain locations (“Uncertain”), locations with single-cell variation in intensity (“Single-cell variation intensity”), locations with spatial single-cell variation (“Single-cell variation spatial”), locations with observed cell cycle dependency (type can be one or more of biological definition, custom data or correlation) (“Cell cycle dependency”), Gene Ontology Cellular Component term identifier (“GO id”).}
+
+```{r}
+data(hpaSubcellularLoc)
+# data(hpaSubcellularLoc14)
+head(hpaSubcellularLoc)
+```
+
+Secretome data: The human secretome is here defined as all Ensembl genes with at least one predicted secreted transcript according to HPA predictions. The complete information about the HPA Secretomedata is given on . This dataset has 230 columns and includes the Ensembl gene identifier (“Gene”). Information about the additionnal variables can be found by clicking on .
+
+```{r}
+data(hpaSecretome)
+head(hpaSecretome)
+```
+
+**单细胞水平**
+
+ 76 cell types from 26 datasets
+ 
+```{r}
+hpascRNA.nor <- read.delim("../../inst/extdata/The-Human-Protein-Atlas/rna_single_cell_type.tsv",stringsAsFactors = FALSE)
+head(hpascRNA.nor)
+unique(hpascRNA.nor$Cell.type)
+```
+per gene and cluster in 26 datasets
+ 
+```{r}
+hpascRNA.tissue <- read.delim("../../inst/extdata/The-Human-Protein-Atlas/rna_single_cell_type_tissue.tsv",stringsAsFactors = FALSE)
+head(hpascRNA.tissue)
+unique(hpascRNA.tissue$Cell.type) # 78种celltype
+unique(hpascRNA.tissue$Tissue) # 26个组织
+# 所有的组织和cell type的组合：171种组合
+dplyr::distinct(hpascRNA.tissue[,c("Tissue","Cell.type")] )
+```
+```{r}
+data(hpaSecretome)
+dim(hpaSecretome)
+head(hpaSecretome)
+```
+summarised gene info
+ 
+```{r}
+hpaGene <- read.delim("../../inst/extdata/The-Human-Protein-Atlas/proteinatlas.tsv",stringsAsFactors = FALSE)
+head(hpaGene)
+colnames(hpaGene)
+```
+```{r}
+head(hpaGene[,!grepl("nTPM.",colnames(hpaGene),fixed = TRUE)])
+```
+ 
+
+**数据库总结**
+
+基本上这个数据库的使用就是这些。通过以上的查询，我们就可以了解我们目标蛋白在某一个癌种当中的表达情况怎么样了。但是相对来说，这个数据库对于正常样本的免疫组化也就是做了两三个，然后对于癌症的话也就是十几个样本。所以有一定的参考价值，但是也绝对的准确的。
+
+另外关于这个数据库的免疫组化结果的统计。他们也汇总了一个表格形式的结果。这个结果存在于一个叫做hpar的R语言包当中。这里我们就把癌症所有的数据下载下来了。这样大家如果只是想要知道一个统计结果而不是想要看图片的话，就可以在表格当中直接查找了。
+
+
+
+
+```{r}
+data(rnaGeneCellLine)
+sapply(rnaGeneCellLine, unique)
+```
+
+## GEPIA
+
+url: http://gepia.cancer-pku.cn/index.html
+
+
+
+
+

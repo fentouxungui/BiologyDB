@@ -1,0 +1,39 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# BiologyDB
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+> 为什么做这件事？
+初衷是用于做基因的注释，后来发现有些数据库多多少少有些问题，比如基因名错了、基因ID过时了等等，为了方便重复使用数据库，所以将常用的数据库整理好了，方便重复调用。
+
+
+
+## 安装
+
+```{r eval=FALSE}
+library(devtools)
+install_github("fentouxungui/BiologyDB")
+```
+
+## 数据
+
+```{r example}
+library(BiologyDB)
+d <- data(package = "BiologyDB")
+d$results[,"Item"]
+```

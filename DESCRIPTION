@@ -1,0 +1,23 @@
+Package: BiologyDB
+Title: Biology Database 
+Version: 0.0.0.9000
+Authors@R: 
+     person("Yongchao", "Zhang", , "zhangyongchao@nibs.ac.cn", role = c("aut", "cre"),
+           comment = c(Github = "https://github.com/fentouxungui"))
+Description: Biology Database at Gene level used to annoatate genes from dataframes, supports for Human, Mouse and Drosophlia.
+License: GPL (>= 2)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+LazyData: true
+LazyDataCompression: xz
+Suggests:
+    dplyr,
+    pheatmap,
+    VennDiagram,
+    rtracklayer,
+    AnnotationDbi,
+    org.Mm.eg.db,
+    org.Hs.eg.db
+Depends: 
+    R (>= 2.10)
