@@ -938,4 +938,90 @@ usethis::use_data(CellTalkDB_Mouse_Interactions, overwrite = TRUE)
 # saveRDS(lrs, file = "../data/CellTalkDB_Mouse_Interactions.rds")
 ```
 
+## NCBI: Gene summary
+
+> https://www.ncbi.nlm.nih.gov/books/NBK3840/table/genefaq.Tc/
+
+[Mus_musculus.ags.gz  ](https://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/):	Gene records
+
+**首先将ASN文件转为XML文件**
+
+参考：[9.10 Parsing huge Entrez XML files](https://biopython-cn.readthedocs.io/zh-cn/latest/en/chr09.html)
+
+install ncbi-tools-bin, and trans ags to xml file:
+
+``sudo apt-get install ncbi-tools-bin``
+``gunzip Mus_musculus.ags.gz``
+``gene2xml -b T  -i Mus_musculus.ags -o Mus_musculus.xml``
+
+**提取基因信息**
+
+``cat Mus_musculus.xml | grep "<Gene-track_geneid>\|<Gene-ref_locus>\|<Entrezgene_summary>" > subset.txt``
+去掉行前的空格
+``sed  -i 's/^[ ]*//g' subset.txt``
+编辑subset.txt添加列名为con
+
+然后使用R语言提取基因信息，具体流程请见："inst/extdata/NCBI/Human_Gene_Summary/extract-gene-summary.md"文件。
+
+```{r }
+load("../data/GENCODE_Mouse_Genes.rda")
+```
+
+```{r}
+ncbi <- readRDS("../inst/extdata/NCBI/Mouse_Gene_Summary/NCBI_gene_summary_from_ASN_filtered.rds")
+table(duplicated(ncbi$Symbol))
+table(duplicated(ncbi$gene_id))
+table(GENCODE_Mouse_Genes$EntrezID %in% ncbi$EntrezID)
+table(GENCODE_Mouse_Genes$Symbol %in% ncbi$Symbol)
+table(GENCODE_Mouse_Genes$Ensembl %in% ncbi$Ensembl)
+table(GENCODE_Mouse_Genes$Ensembl %in% ncbi$Ensembl.By.OrgHSegdb)
+table(GENCODE_Mouse_Genes$MGI %in% gsub("^MGI:", "",ncbi$MGI))
+```
+```{r}
+NCBI_Mouse_GeneSummary <- ncbi
+usethis::use_data(NCBI_Mouse_GeneSummary, overwrite = TRUE)
+```
+
+## Uniprot: Gene Function
+ 
+下载蛋白的注释信息，具体参考："inst/extdata/UniProt/GeneFunction/Human/提取-UniProt-Protein-summary.md"
+
+```{r}
+uniprot <- read.delim("../inst/extdata/UniProt/GeneFunction/Mouse/uniprotkb_AND_model_organism_10090_2023_08_21.tsv",stringsAsFactors = FALSE)
+uniprot <- uniprot[uniprot$Reviewed == "reviewed",]
+uniprot <- uniprot[uniprot$Function..CC. != "",]
+uniprot <- uniprot[uniprot$Gene.Names..primary. != "",]
+dim(uniprot)
+
+# primary gene name 有多个的，展开后再合并
+uniprot.sub <- uniprot[grepl(";",uniprot$Gene.Names..primary.),]
+uniprot <- uniprot[!grepl(";",uniprot$Gene.Names..primary.),]
+
+dup.numbers <- unname(sapply(uniprot.sub$Gene.Names..primary.,function(x)length(unlist(strsplit(x,split = ";")))))
+uniprot.sub.expand <- uniprot.sub[rep(1:nrow(uniprot.sub),dup.numbers),]
+uniprot.sub.expand$Gene.Names..primary. <- trimws(unlist(strsplit(uniprot.sub$Gene.Names..primary.,split = ";")))
+uniprot <- rbind(uniprot, uniprot.sub.expand)
+```
+
+
+```{r}
+uniprot$Reviewed <- NULL
+uniprot$Organism <- NULL
+uniprot$Gene.Names <- NULL
+uniprot$Gene.encoded.by <- NULL
+colnames(uniprot) <- c("Entry", "Entry.Name", "Protein.names", "FunctionCC" ,"Primary.Gene.Names")
+table(uniprot$Primary.Gene.Names %in% GENCODE_Human_Genes$Symbol)
+table(duplicated(uniprot$Primary.Gene.Names))
+```
+问题是，有少量基因是重复的！
+
+```{r}
+uniprot$Ensembl.Added <- GENCODE_Mouse_Genes$Ensembl[match(uniprot$Primary.Gene.Names, GENCODE_Mouse_Genes$Symbol)]
+UniProt_Mouse_GeneFunction <- uniprot
+usethis::use_data(UniProt_Mouse_GeneFunction, overwrite = TRUE)
+```
+
+
+
+
 

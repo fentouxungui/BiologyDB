@@ -1,0 +1,193 @@
+---
+title: "Fly"
+author: "Zhang Yongchao"
+date: "2022-08-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+source("../R/functions.R")
+library(rtracklayer)
+library(devtools)
+library(dplyr)
+library(AnnotationDbi)
+library(org.Dm.eg.db)
+display_venn <- function(x, ...){
+  library(VennDiagram)
+  grid.newpage()
+  venn_object <- venn.diagram(x, filename = NULL, ...)
+  grid.draw(venn_object)
+}
+```
+
+# 核心数据库
+
+**下载GTF**
+
+url:
+
+
+**预处理**
+
+仅保留基因水平的信息
+
+```{r}
+gtf <- as.data.frame(rtracklayer::import("../inst/extdata/Flybase/Genome/dmel-all-r6.56.gtf"))
+table(gtf$type)
+gtf <- gtf[gtf$type %in% c("gene"),c("gene_id", "gene_symbol", "type", "seqnames", "start", "end", "width", "strand" )]
+head(gtf)
+```
+
+
+
+```{r}
+colnames(gtf) <-  c("Ensembl", "Symbol","Gene.Type", "Chrosome", "Start", "End","Length", "Strand")
+head(gtf)
+```
+
+注意： 基因名有重复值！**有些可能是因为在基因组上有多个拷贝**，或者是重复注释。
+
+```{r}
+table(is.na(gtf$Symbol)) # 基因名无缺失值
+table(duplicated(gtf$Symbol)) # 没有重复的基因Symbol
+head(sort(table(gtf$Symbol[duplicated(gtf$Symbol)]),decreasing = TRUE),20) # top 20 重复基因symbol,一般是lncRNA,asRNA等。
+gtf.Duplicated.symbols <- unique(gtf$Symbol[duplicated(gtf$Symbol)])
+# gtf.Duplicated.symbols
+dplyr::arrange(gtf[gtf$Symbol %in% gtf.Duplicated.symbols,],desc(Symbol))
+```
+
+**注释全名、别名、蛋白名和Entrez编号**
+
+注释不上的标记为NA值。
+
+```{r}
+gtf$EntrezID <- mapIds(x = org.Dm.eg.db, keys = gtf$Ensembl,column = "ENTREZID",keytype = "ENSEMBL",multiVals = "first")
+gtf$Alias <- mapIds(x = org.Dm.eg.db, keys = gtf$Ensembl,column = "ALIAS",keytype = "ENSEMBL",multiVals = "first")
+gtf$Name <- mapIds(x = org.Dm.eg.db, keys = gtf$Ensembl,column = "GENENAME",keytype = "ENSEMBL",multiVals = "first")
+gtf$UniProt <- mapIds(x = org.Dm.eg.db, keys = gtf$Ensembl,column = "UNIPROT",keytype = "ENSEMBL",multiVals = "first")
+gtf <- gtf[,c("Ensembl", "Symbol", "Gene.Type","EntrezID", "Name","Alias","UniProt","Chrosome", "Start", "End","Length", "Strand")]
+```
+
+```{r}
+Flybase_Fly_Genes <- gtf
+usethis::use_data(Flybase_Fly_Genes, overwrite = TRUE)
+```
+# 非核心数据库
+
+## Flybase: Gene summary
+
+https://ftp.flybase.net/releases/current/precomputed_files/genes/
+
+```{r}
+df <- read.delim("../inst/extdata/Flybase/Summary/best_gene_summary_fb_2024_01.tsv",stringsAsFactors = FALSE)
+head(df)
+table(df$FBgn_ID %in% gtf$Ensembl)
+Flybase_Fly_BestGeneSummary <- df
+usethis::use_data(Flybase_Fly_BestGeneSummary, overwrite = TRUE)
+```
+
+```{r}
+df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/gene_snapshots_fb_2024_01.tsv"))
+head(df)
+table(df$FBgn_ID %in% gtf$Ensembl)
+Flybase_Fly_GeneSnapshots <- df
+usethis::use_data(Flybase_Fly_GeneSnapshots, overwrite = TRUE)
+```
+```{r}
+df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/automated_gene_summaries_fb_2024_01.tsv"))
+head(df)
+table(df$FBgn_ID %in% gtf$Ensembl)
+Flybase_Fly_AutomatedGeneSummary <- df
+usethis::use_data(Flybase_Fly_AutomatedGeneSummary, overwrite = TRUE)
+```
+
+
+## Animal TF DB 3.0
+
+url: http://bioinfo.life.hust.edu.cn/AnimalTFDB/
+
+**TFs**
+
+```{r}
+TF <- read.delim("../inst/extdata/AnimalTFDB3/Drosophila_melanogaster/Drosophila_melanogaster_TF.txt.gz",stringsAsFactors = FALSE)
+head(TF)
+TF <- TF[,c("Ensembl", "Entrez.ID", "Symbol" , "Family")]
+```
+
+根据EnsemblID、Symbol和EntrezID匹配基因名。
+
+```{r}
+TFs <- mapping_update(inputDF = TF, 
+               db = gtf, 
+               by.input = "Ensembl", by.db = "Ensembl", 
+               by.input.2 = "Symbol", by.db.2 = "Symbol",
+               by.input.3 = "Entrez.ID", by.db.3 = "EntrezID")
+TFs$lost # 未匹配上的基因，经查，无法对应上。
+```
+
+```{r}
+TFs$lost[TFs$lost$Ensembl == "FBgn0284250","Entrez.ID"] <- "-"
+TFs$lost[TFs$lost$Ensembl == "FBgn0284250","Symbol"] <- "L"
+TFs$lost[TFs$lost$Ensembl == "FBgn0284250","Ensembl"] <- "FBgn0288433"
+
+TFs$lost[TFs$lost$Ensembl == "FBgn0037645","Entrez.ID"] <- "41069"
+TFs$lost[TFs$lost$Ensembl == "FBgn0037645","Symbol"] <- "ich"
+TFs$lost[TFs$lost$Ensembl == "FBgn0037645","Ensembl"] <- "FBgn0286204"
+```
+
+```{r}
+table(TFs$matched$label)
+results <- rbind(TFs$lost, TFs$matched[,colnames(TFs$lost)])
+table(duplicated(results$Ensembl))
+results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
+results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
+colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
+```
+
+```{r}
+AnimalTFDB_Fly_TF <- results
+usethis::use_data(AnimalTFDB_Fly_TF, overwrite = TRUE)
+```
+
+
+**TF cofactor**
+
+根据EnsemblID、Symbol和EntrezID匹配基因名。
+
+```{r}
+TF <- read.delim("../inst/extdata/AnimalTFDB3/Drosophila_melanogaster/Drosophila_melanogaster_TF_cofactors.txt.gz",stringsAsFactors = FALSE)
+head(TF)
+TF <- TF[,c("Ensembl", "Entrez.ID", "Symbol" , "Family")]
+```
+
+根据EnsemblID、Symbol和EntrezID匹配基因名。
+
+```{r}
+TFs <- mapping_update(inputDF = TF, 
+               db = gtf, 
+               by.input = "Ensembl", by.db = "Ensembl", 
+               by.input.2 = "Symbol", by.db.2 = "Symbol",
+               by.input.3 = "Entrez.ID", by.db.3 = "EntrezID")
+TFs$lost # 未匹配上的基因，经查，无法对应上。
+```
+
+
+```{r}
+results <- TFs$matched
+table(results$label)
+results$label <- NULL
+results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
+results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
+colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
+```
+
+```{r}
+AnimalTFDB_Fly_TFCofactors <- results
+usethis::use_data(AnimalTFDB_Fly_TFCofactors, overwrite = TRUE)
+```
+
+
