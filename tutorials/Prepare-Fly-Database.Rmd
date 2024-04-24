@@ -16,6 +16,7 @@ library(devtools)
 library(dplyr)
 library(AnnotationDbi)
 library(org.Dm.eg.db)
+library(ZhangRtools)
 display_venn <- function(x, ...){
   library(VennDiagram)
   grid.newpage()
