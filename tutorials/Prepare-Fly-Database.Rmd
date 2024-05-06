@@ -10,7 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-source("../R/functions.R")
 library(rtracklayer)
 library(devtools)
 library(dplyr)
@@ -191,4 +190,72 @@ AnimalTFDB_Fly_TFCofactors <- results
 usethis::use_data(AnimalTFDB_Fly_TFCofactors, overwrite = TRUE)
 ```
 
+## GENEONTOLOGY
 
+> [详解如何获取物种所有基因对应的GO注释](https://cloud.tencent.com/developer/article/1625243)
+
+下载位置： https://current.geneontology.org/products/pages/downloads.html
+
+https://geneontology.org/docs/download-ontology/ 页面下载： https://purl.obolibrary.org/obo/go/go-basic.obo
+
+```{r}
+df <- read.delim("../inst/extdata/GENEONTOLOGY/fb.gaf.gz",skip = 36,header = FALSE)
+# https://geneontology.org/docs/go-annotation-file-gaf-format-2.2/
+colnames(df) <- c("DB", "ProteinID", "Symbol","Qualifier","GOID","Reference", "EvidenceCode","WithOrFrom","Aspect", 
+                  "GeneProducts","Synonym","Type","Taxon", "Date","AssignedBy","AnnotationExtension","GeneProductsFromID")
+write.csv(unique(df$ProteinID), file = "fly.IDs.unique.csv",row.names = FALSE,quote = FALSE)
+ID.map <- read.delim("./FlyBase_Fields_download_for_GENEONTOLOGY.txt",stringsAsFactors = FALSE)
+lost <- ID.map$X.SUBMITTED.ID[ID.map$FBID_KEY == ""]
+df <- df[!df$ProteinID %in% lost,]
+ID.map <- ID.map[ID.map$FBID_KEY != "",]
+mapping <- ID.map$FBID_KEY
+names(mapping) <- ID.map$X.SUBMITTED.ID
+df$ProteinID <- mapping[df$ProteinID]
+
+library(ontologyIndex)
+gs <- get_OBO("../inst/extdata/GENEONTOLOGY/go-basic.obo")
+table(df$GOID %in% names(gs$name))
+df$GOName <- gs$name[df$GOID]
+```
+
+```{r}
+# 为什么不用sumbol，因为有30多个NA值
+df.sub <- df[,c("ProteinID","GOID","GOName","Aspect")]
+# remove 3 root: GO:0005575:cellular_component, GO:0003674:molecular_function, GO:0008150: biological_process
+df.sub <- df.sub[!df.sub$GOID %in% c("GO:0005575", "GO:0003674", "GO:0008150"),]
+res <- list()
+aspect.name <- c("MolecularFunction","BiologicalProcess","CellularComponent")
+names(aspect.name) <- c("F","P","C")
+for (i in unique(df.sub$Aspect)) {
+  df.sub.sub <- df.sub[df.sub$Aspect == i,]
+  df.sub.sub.aggr <- Aggregate_df(df = df.sub.sub, id = "ProteinID")
+  df.sub.sub.aggr$Aspect <- NULL
+  colnames(df.sub.sub.aggr)[2:3] <- paste(aspect.name[i],colnames(df.sub.sub.aggr)[2:3],sep = "_")
+  res[[aspect.name[i]]] <- df.sub.sub.aggr
+}
+```
+
+
+```{r}
+# saveRDS(res,file = "temp.rds")
+# run codes bellow under a server!
+# results <- merge(res$MolecularFunction, res$CellularComponent, all= TRUE, by = "Symbol")
+# results <- merge(results, res$BiologicalProcess, all= TRUE, by = "Symbol")
+# results[is.na(results)] <- "-"
+```
+
+```{r}
+GENEONTOLOGY_Fly <- readRDS("./fly.go.rds")
+map.df <- distinct(ID.map,FBID_KEY,SYMBOL)
+mapping <- map.df$SYMBOL
+names(mapping) <- map.df$FBID_KEY
+
+GENEONTOLOGY_Fly$Symbol <- mapping[GENEONTOLOGY_Fly$ProteinID]
+colnames(GENEONTOLOGY_Fly)[1] <- "Ensembl"
+
+GENEONTOLOGY_Fly <- GENEONTOLOGY_Fly[,c( "Ensembl", "Symbol", "MolecularFunction_GOID",  "MolecularFunction_GOName", "CellularComponent_GOID", "CellularComponent_GOName", "BiologicalProcess_GOID" , "BiologicalProcess_GOName")]
+
+load("../data/Flybase_Fly_Genes.rda")
+table(GENEONTOLOGY_Fly$Symbol %in% Flybase_Fly_Genes$Symbol)
+usethis::use_data(GENEONTOLOGY_Fly, overwrite = TRUE)
+```

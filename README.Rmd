@@ -16,12 +16,13 @@ knitr::opts_chunk$set(
 # BiologyDB
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 > 为什么做这件事？
 初衷是用于做基因的注释，后来发现有些数据库多多少少有些问题，比如基因名错了、基因ID过时了等等，为了方便重复使用数据库，所以将常用的数据库整理好了，方便重复调用。数据库预处理的原则是简单又灵活。
 
-
+软件功能： **基因水平的注释**。
 
 ## 安装
 
@@ -30,6 +31,16 @@ library(devtools)
 install_github("fentouxungui/BiologyDB")
 ```
 
+## 注意
+
+首先，由于各种各样的原因，并非所有的数据都整理的很好【更新到最新ID】。另外，建议在注释本地数据时，先更新本地基因数据到最新的ID。
+
+- 人的话，用HGNC提供的在线工具[Multi-symbol checker](https://www.genenames.org/tools/multi-symbol-checker/)进行更新，然后用[ZhangRtools](https://github.com/fentouxungui/ZhangRtools)包里的``Check_hgnc_hits``对匹配结果预处理
+
+- 小鼠的话，用MGI提供的在线工具[MGI Batch Query](https://www.informatics.jax.org/batch)进行基因ID更新
+
+- 果蝇的话，用Flybase提供的在线工具[Batch Download](https://flybase.org/batchdownload)或[ID Validator](https://flybase.org/convert/id)进行ID更新。
+
 ## 数据
 
 ```{r example}
@@ -37,3 +48,25 @@ library(BiologyDB)
 d <- data(package = "BiologyDB")
 d$results[,"Item"]
 ```
+
+## A small case
+
+```{r}
+
+```
+
+
+## 数据整理过程
+
+人：``tutorials/Prepare-Human-Database.Rmd``
+
+小鼠：``tutorials/Prepare-Mouse-Database.Rmd``
+
+果蝇：``tutorials/Prepare-Fly-Database.Rmd``
+
+## R sessions
+
+```{r}
+sessionInfo()
+```
+

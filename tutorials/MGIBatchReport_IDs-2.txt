@@ -1,0 +1,590 @@
+Input	Input Type	MGI Gene/Marker ID	Symbol	Name	Feature Type
+P01915		No associated gene			
+P06344		No associated gene			
+P03976		No associated gene			
+P04944		No associated gene			
+Q6P8Q0		No associated gene			
+P01734		No associated gene			
+P18526		No associated gene			
+P01810		No associated gene			
+P01823		No associated gene			
+P01676		No associated gene			
+P01671		No associated gene			
+P03980		No associated gene			
+P01655		No associated gene			
+P01804		No associated gene			
+P01664		No associated gene			
+P01787		No associated gene			
+P04940		No associated gene			
+P01807		No associated gene			
+P01667		No associated gene			
+P01645		No associated gene			
+P01881		No associated gene			
+A0A286YDM5		No associated gene			
+P01629		No associated gene			
+P01674		No associated gene			
+P01820		No associated gene			
+P06329		No associated gene			
+P01746		No associated gene			
+P01668		No associated gene			
+P01644		No associated gene			
+P01634		No associated gene			
+P01800		No associated gene			
+P20040		No associated gene			
+P01790		No associated gene			
+P01793		No associated gene			
+P01657		No associated gene			
+P01678		No associated gene			
+P01745		No associated gene			
+P01878		No associated gene			
+P01666		No associated gene			
+P01788		No associated gene			
+P01796		No associated gene			
+P18527		No associated gene			
+P01660		No associated gene			
+P01648		No associated gene			
+P01647		No associated gene			
+P03977		No associated gene			
+P01791		No associated gene			
+MGI:3642276		No associated gene			
+P01797		No associated gene			
+P01747		No associated gene			
+P01725		No associated gene			
+P18529		No associated gene			
+P01663		No associated gene			
+P03987		No associated gene			
+P01662		No associated gene			
+P01864		No associated gene			
+P01750		No associated gene			
+P01654		No associated gene			
+P01670		No associated gene			
+P01636		No associated gene			
+P01756		No associated gene			
+P01669		No associated gene			
+P04213		No associated gene			
+P84751		No associated gene			
+P01811		No associated gene			
+P01798		No associated gene			
+P01794		No associated gene			
+P01819		No associated gene			
+A0A668KM38		No associated gene			
+P01739		No associated gene			
+P01726		No associated gene			
+P01735		No associated gene			
+P01741		No associated gene			
+P01723		No associated gene			
+P01789		No associated gene			
+P01809		No associated gene			
+P01822		No associated gene			
+P01795		No associated gene			
+P01675		No associated gene			
+P01727		No associated gene			
+P01736		No associated gene			
+P01672		No associated gene			
+P06320		No associated gene			
+P01724		No associated gene			
+P06334		No associated gene			
+P01661		No associated gene			
+P01843		No associated gene			
+Q3ZRW6		No associated gene			
+P04941		No associated gene			
+P18532		No associated gene			
+P01882		No associated gene			
+P18530		No associated gene			
+P01643		No associated gene			
+P01757		No associated gene			
+P06321		No associated gene			
+P01673		No associated gene			
+P01658		No associated gene			
+P18525		No associated gene			
+P01646		No associated gene			
+P01652		No associated gene			
+P01801		No associated gene			
+P02762		No associated gene			
+P01631		No associated gene			
+P01630		No associated gene			
+P01677		No associated gene			
+P01786		No associated gene			
+P01656		No associated gene			
+P04943		No associated gene			
+P01853		No associated gene			
+P01812		No associated gene			
+P01729		No associated gene			
+P01653		No associated gene			
+P01759		No associated gene			
+P11260		No associated gene			
+P01851		No associated gene			
+P01659		No associated gene			
+P01638		No associated gene			
+P84750		No associated gene			
+P01753		No associated gene			
+A2KF29		No associated gene			
+P01665		No associated gene			
+P01679		No associated gene			
+P01803		No associated gene			
+P01649		No associated gene			
+P18528		No associated gene			
+P06330		No associated gene			
+P01637		No associated gene			
+P01799		No associated gene			
+P04946		No associated gene			
+P01680		No associated gene			
+P18524		No associated gene			
+P01802		No associated gene			
+P04212		No associated gene			
+P04214		No associated gene			
+P01748		No associated gene			
+P01852		No associated gene			
+P01792		No associated gene			
+P06335		No associated gene			
+P03985		No associated gene			
+Q9QWY8	SWISS-PROT	MGI:1342335	Asap1	ArfGAP with SH3 domain, ankyrin repeat and PH domain1	protein coding gene
+000049785		No associated gene			
+000049801		No associated gene			
+Q60710	SWISS-PROT	MGI:1927468	Samhd1	SAM domain and HD domain, 1	protein coding gene
+000050038		No associated gene			
+000050039		No associated gene			
+Q80VY9	SWISS-PROT	MGI:2445102	Dhx33	DEAH-box helicase 33	protein coding gene
+000050061		No associated gene			
+O55143	SWISS-PROT	MGI:88110	Atp2a2	ATPase, Ca++ transporting, cardiac muscle, slow twitch 2	protein coding gene
+Q64518	SWISS-PROT	MGI:1194503	Atp2a3	ATPase, Ca++ transporting, ubiquitous	protein coding gene
+Q8VC65	SWISS-PROT	MGI:2146855	Nrm	nurim (nuclear envelope membrane protein)	protein coding gene
+000049740		No associated gene			
+000049741		No associated gene			
+O70293	SWISS-PROT	MGI:1347078	Grk6	G protein-coupled receptor kinase 6	protein coding gene
+Q9D9W1	SWISS-PROT	MGI:1923670	Cimap3	ciliary microtubule associated protein 3	protein coding gene
+Q2QI47	SWISS-PROT	MGI:1341292	Ush2a	usherin	protein coding gene
+P15535	SWISS-PROT	MGI:95705	B4galt1	UDP-Gal:betaGlcNAc beta 1,4- galactosyltransferase, polypeptide 1	protein coding gene
+000050230		No associated gene			
+Q7TSK2	SWISS-PROT	MGI:104745	Sez6	seizure related gene 6	protein coding gene
+Q9QX60	SWISS-PROT	MGI:1351602	Dguok	deoxyguanosine kinase	protein coding gene
+O88786	SWISS-PROT	MGI:1277954	Il13ra2	interleukin 13 receptor, alpha 2	protein coding gene
+Q3UHC1	TrEMBL	MGI:104580	Rapgef1	Rap guanine nucleotide exchange factor (GEF) 1	protein coding gene
+000050563		No associated gene			
+P86046	SWISS-PROT	MGI:3781032	Kcnj13	potassium inwardly-rectifying channel, subfamily J, member 13	protein coding gene
+P70377	SWISS-PROT	MGI:109178	Fgf13	fibroblast growth factor 13	protein coding gene
+000050578		No associated gene			
+000050579		No associated gene			
+P98083	SWISS-PROT	MGI:98296	Shc1	src homology 2 domain-containing transforming protein C1	protein coding gene
+P18872	SWISS-PROT	MGI:95775	Gnao1	guanine nucleotide binding protein, alpha O	protein coding gene
+B2RXV4	SWISS-PROT	MGI:2444881	Flvcr1	feline leukemia virus subgroup C cellular receptor 1	protein coding gene
+000026225		No associated gene			
+P97287	SWISS-PROT	MGI:101769	Mcl1	myeloid cell leukemia sequence 1	protein coding gene
+Q05860	SWISS-PROT	MGI:101815	Fmn1	formin 1	protein coding gene
+P62881	SWISS-PROT	MGI:101848	Gnb5	guanine nucleotide binding protein (G protein), beta 5	protein coding gene
+000037051		No associated gene			
+P20263	SWISS-PROT	MGI:101893	Pou5f1	POU domain, class 5, transcription factor 1	protein coding gene
+P25425	SWISS-PROT	MGI:101898	Pou2f1	POU domain, class 2, transcription factor 1	protein coding gene
+Q60591	SWISS-PROT	MGI:102463	Nfatc2	nuclear factor of activated T cells, cytoplasmic, calcineurin dependent 2	protein coding gene
+Q64131	SWISS-PROT	MGI:102672	Runx3	runt related transcription factor 3	protein coding gene
+P21956	SWISS-PROT	MGI:102768	Mfge8	milk fat globule EGF and factor V/VIII domain containing	protein coding gene
+Q64704	SWISS-PROT	MGI:103077	Stx3	syntaxin 3	protein coding gene
+000045526		No associated gene			
+P55014	SWISS-PROT	MGI:103150	Slc12a1	solute carrier family 12, member 1	protein coding gene
+Q00731	SWISS-PROT	MGI:103178	Vegfa	vascular endothelial growth factor A	protein coding gene
+P97305	SWISS-PROT	MGI:103296	Nfatc3	nuclear factor of activated T cells, cytoplasmic, calcineurin dependent 3	protein coding gene
+Q91ZU6	SWISS-PROT	MGI:104627	Dst	dystonin	protein coding gene
+Q60819	SWISS-PROT	MGI:104644	Il15ra	interleukin 15 receptor, alpha chain	protein coding gene
+P47757	SWISS-PROT	MGI:104652	Capzb	capping actin protein of muscle Z-line subunit beta	protein coding gene
+000045516		No associated gene			
+Q60953	SWISS-PROT	MGI:104662	Pml	promyelocytic leukemia	protein coding gene
+Q60954	SWISS-PROT	MGI:104717	Meis1	Meis homeobox 1	protein coding gene
+Q61527	SWISS-PROT	MGI:104771	Erbb4	erb-b2 receptor tyrosine kinase 4	protein coding gene
+P97377	SWISS-PROT	MGI:104772	Cdk2	cyclin dependent kinase 2	protein coding gene
+P51450	SWISS-PROT	MGI:104856	Rorc	RAR-related orphan receptor gamma	protein coding gene
+Q61584	SWISS-PROT	MGI:104860	Fxr1	FMR1 autosomal homolog 1	protein coding gene
+Q61730	SWISS-PROT	MGI:104975	Il1rap	interleukin 1 receptor accessory protein	protein coding gene
+Q61699	SWISS-PROT	MGI:105053	Hsph1	heat shock 105kDa/110kDa protein 1	protein coding gene
+Q8K592	SWISS-PROT	MGI:105062	Amhr2	anti-Mullerian hormone type 2 receptor	protein coding gene
+P30999	SWISS-PROT	MGI:105100	Ctnnd1	catenin delta 1	protein coding gene
+Q61043	SWISS-PROT	MGI:105108	Nin	ninein	protein coding gene
+P22272	SWISS-PROT	MGI:105304	Il6ra	interleukin 6 receptor, alpha	protein coding gene
+P62996	SWISS-PROT	MGI:106016	Tra2b	transformer 2 beta	protein coding gene
+000045348		No associated gene			
+000045347		No associated gene			
+Q99KP6	SWISS-PROT	MGI:106247	Prpf19	pre-mRNA processing factor 19	protein coding gene
+Q8BIF2	SWISS-PROT	MGI:106368	Rbfox3	RNA binding protein, fox-1 homolog (C. elegans) 3	protein coding gene
+Q64516	SWISS-PROT	MGI:106594	Gk	glycerol kinase	protein coding gene
+Q9QY06	SWISS-PROT	MGI:106624	Myo9b	myosin IXb	protein coding gene
+Q9D6Y7	SWISS-PROT	MGI:106916	Msra	methionine sulfoxide reductase A	protein coding gene
+O08601	SWISS-PROT	MGI:106926	Mttp	microsomal triglyceride transfer protein	protein coding gene
+000035460		No associated gene			
+000035458		No associated gene			
+Q9ES52	SWISS-PROT	MGI:107357	Inpp5d	inositol polyphosphate-5-phosphatase D	protein coding gene
+000044457		No associated gene			
+000044372		No associated gene			
+000044458		No associated gene			
+Q9QZS3	SWISS-PROT	MGI:107423	Numb	NUMB endocytic adaptor protein	protein coding gene
+Q61701	SWISS-PROT	MGI:107427	Elavl4	ELAV like RNA binding protein 4	protein coding gene
+Q64691	SWISS-PROT	MGI:107437	Capn3	calpain 3	protein coding gene
+Q9WTN3	SWISS-PROT	MGI:107606	Srebf1	sterol regulatory element binding transcription factor 1	protein coding gene
+Q91XQ0	SWISS-PROT	MGI:107714	Dnah8	dynein, axonemal, heavy chain 8	protein coding gene
+Q9QXJ1	SWISS-PROT	MGI:107765	Apbb1	amyloid beta precursor protein binding family B member 1	protein coding gene
+Q9JIF0	SWISS-PROT	MGI:107846	Prmt1	protein arginine N-methyltransferase 1	protein coding gene
+P70352	SWISS-PROT	MGI:107948	Art5	ADP-ribosyltransferase 5	protein coding gene
+O54739		No associated gene			
+000035886		No associated gene			
+Q60739	SWISS-PROT	MGI:108047	Bag1	BCL2-associated athanogene 1	protein coding gene
+P97300	SWISS-PROT	MGI:108077	Nptn	neuroplastin	protein coding gene
+000026785		No associated gene			
+P70444	SWISS-PROT	MGI:108093	Bid	BH3 interacting domain death agonist	protein coding gene
+P0C605	SWISS-PROT	MGI:108174	Prkg1	protein kinase, cGMP-dependent, type I	protein coding gene
+Q9EPQ8	SWISS-PROT	MGI:108399	Tcf20	transcription factor 20	protein coding gene
+P97953	SWISS-PROT	MGI:109124	Vegfc	vascular endothelial growth factor C	protein coding gene
+P62500	SWISS-PROT	MGI:109127	Tsc22d1	TSC22 domain family, member 1	protein coding gene
+P97386	SWISS-PROT	MGI:109152	Lig3	ligase III, DNA, ATP-dependent	protein coding gene
+P98078	SWISS-PROT	MGI:109175	Dab2	disabled 2, mitogen-responsive phosphoprotein	protein coding gene
+Q61144	SWISS-PROT	MGI:109284	Psen2	presenilin 2	protein coding gene
+000036858		No associated gene			
+P97474	SWISS-PROT	MGI:109340	Pitx2	paired-like homeodomain transcription factor 2	protein coding gene
+P04919	SWISS-PROT	MGI:109393	Slc4a1	solute carrier family 4 (anion exchanger), member 1	protein coding gene
+Q9QUQ5	SWISS-PROT	MGI:109525	Trpc4	transient receptor potential cation channel, subfamily C, member 4	protein coding gene
+Q9R244	SWISS-PROT	MGI:109527	Trpc2	transient receptor potential cation channel, subfamily C, member 2	protein coding gene
+000027818		No associated gene			
+O35615	SWISS-PROT	MGI:1095400	Zfpm1	zinc finger protein, multitype 1	protein coding gene
+Q9DD24	SWISS-PROT	MGI:109567	Tceal9	transcription elongation factor A like 9	protein coding gene
+O35625	SWISS-PROT	MGI:1096327	Axin1	axin 1	protein coding gene
+Q9CS84	SWISS-PROT	MGI:1096391	Nrxn1	neurexin I	protein coding gene
+Q8C5D8	SWISS-PROT	MGI:1096566	Pias2	protein inhibitor of activated STAT 2	protein coding gene
+P47939	SWISS-PROT	MGI:1098222	Resp18	regulated endocrine-specific protein 18	protein coding gene
+Q925J9	SWISS-PROT	MGI:1100846	Med1	mediator complex subunit 1	protein coding gene
+P20334	SWISS-PROT	MGI:1101059	Tnfrsf9	tumor necrosis factor receptor superfamily, member 9	protein coding gene
+Q3UMU9	SWISS-PROT	MGI:1194492	Hdgfl2	HDGF like 2	protein coding gene
+P35761	SWISS-PROT	MGI:1194921	Ttk	Ttk protein kinase	protein coding gene
+O55242	SWISS-PROT	MGI:1195268	Sigmar1	sigma non-opioid intracellular receptor 1	protein coding gene
+O08842	SWISS-PROT	MGI:1195462	Gfra2	glial cell line derived neurotrophic factor family receptor alpha 2	protein coding gene
+O54709	SWISS-PROT	MGI:1196250	Klrk1	killer cell lectin-like receptor subfamily K, member 1	protein coding gene
+Q9Z2S7	SWISS-PROT	MGI:1196284	Tsc22d3	TSC22 domain family, member 3	protein coding gene
+P63166	SWISS-PROT	MGI:1197010	Sumo1	small ubiquitin-like modifier 1	protein coding gene
+000035696		No associated gene			
+Q80YE4	SWISS-PROT	MGI:1197518	Aatk	apoptosis-associated tyrosine kinase	protein coding gene
+O54918	SWISS-PROT	MGI:1197519	Bcl2l11	BCL2 like 11	protein coding gene
+P70390	SWISS-PROT	MGI:1201673	Shox2	SHOX homeobox 2	protein coding gene
+Q9ESZ8	SWISS-PROT	MGI:1202722	Gtf2i	general transcription factor II I	protein coding gene
+O55230	SWISS-PROT	MGI:1261809	Rad51d	RAD51 paralog D	protein coding gene
+000037261		No associated gene			
+000037260		No associated gene			
+000037266		No associated gene			
+000037263		No associated gene			
+000037262		No associated gene			
+O70161	SWISS-PROT	MGI:1298224	Pip5k1c	phosphatidylinositol-4-phosphate 5-kinase, type 1 gamma	protein coding gene
+O70589	SWISS-PROT	MGI:1309489	Cask	calcium/calmodulin dependent serine protein kinase	protein coding gene
+O88898	SWISS-PROT	MGI:1330810	Trp63	transformation related protein 63	protein coding gene
+000044373		No associated gene			
+Q91WP0	SWISS-PROT	MGI:1330832	Masp2	MBL associated serine protease 2	protein coding gene
+Q9Z0D9	SWISS-PROT	MGI:1333815	Cx3cr1	C-X3-C motif chemokine receptor 1	protein coding gene
+Q8CCH7	SWISS-PROT	MGI:1334444	Zfpm2	zinc finger protein, multitype 2	protein coding gene
+Q8CIV7	SWISS-PROT	MGI:1338039	Ovol2	ovo like zinc finger 2	protein coding gene
+O54828	SWISS-PROT	MGI:1338824	Rgs9	regulator of G-protein signaling 9	protein coding gene
+Q00941	SWISS-PROT	MGI:1339754	Csf2ra	colony stimulating factor 2 receptor, alpha, low-affinity (granulocyte-macrophage)	protein coding gene
+O70165	SWISS-PROT	MGI:1340905	Fcna	ficolin A	protein coding gene
+000045528		No associated gene			
+Q6PHZ2	SWISS-PROT	MGI:1341265	Camk2d	calcium/calmodulin-dependent protein kinase II, delta	protein coding gene
+O35219	SWISS-PROT	MGI:1341722	Kcnh2	potassium voltage-gated channel, subfamily H (eag-related), member 2	protein coding gene
+Q704Y3	SWISS-PROT	MGI:1341787	Trpv1	transient receptor potential cation channel, subfamily V, member 1	protein coding gene
+000045394		No associated gene			
+000036893		No associated gene			
+000036995		No associated gene			
+Q9WTK7	SWISS-PROT	MGI:1341870	Stk11	serine/threonine kinase 11	protein coding gene
+000036997		No associated gene			
+000045490		No associated gene			
+000050232		No associated gene			
+P28659	SWISS-PROT	MGI:1342295	Celf1	CUGBP, Elav-like family member 1	protein coding gene
+000045553		No associated gene			
+Q03267	SWISS-PROT	MGI:1342540	Ikzf1	IKAROS family zinc finger 1	protein coding gene
+P81183	SWISS-PROT	MGI:1342541	Ikzf2	IKAROS family zinc finger 2	protein coding gene
+Q9JHD1	SWISS-PROT	MGI:1343094	Kat2b	K(lysine) acetyltransferase 2B	protein coding gene
+Q9JHD2	SWISS-PROT	MGI:1343101	Kat2a	K(lysine) acetyltransferase 2A	protein coding gene
+Q8C208	SWISS-PROT	MGI:1343139	Ikzf4	IKAROS family zinc finger 4	protein coding gene
+Q9Z1X0	SWISS-PROT	MGI:1343459	Ccl27a	C-C motif chemokine ligand 27A	protein coding gene
+000037167		No associated gene			
+Q8R1B8	SWISS-PROT	MGI:1343464	Rorb	RAR-related orphan receptor beta	protein coding gene
+Q91XM9	SWISS-PROT	MGI:1344351	Dlg2	discs large MAGUK scaffold protein 2	protein coding gene
+Q99K74	SWISS-PROT	MGI:1344385	Med24	mediator complex subunit 24	protein coding gene
+Q9JKS4	SWISS-PROT	MGI:1344412	Ldb3	LIM domain binding 3	protein coding gene
+P49282	SWISS-PROT	MGI:1345279	Slc11a2	solute carrier family 11 (proton-coupled divalent metal ion transporters), member 2	protein coding gene
+Q9Z0P7	SWISS-PROT	MGI:1345643	Sufu	SUFU negative regulator of hedgehog signaling	protein coding gene
+Q9WVS8	SWISS-PROT	MGI:1346347	Mapk7	mitogen-activated protein kinase 7	protein coding gene
+P47811	SWISS-PROT	MGI:1346865	Mapk14	mitogen-activated protein kinase 14	protein coding gene
+Q9CQ39	SWISS-PROT	MGI:1347064	Med21	mediator complex subunit 21	protein coding gene
+000044470		No associated gene			
+000044490		No associated gene			
+000044465		No associated gene			
+000044502		No associated gene			
+000044463		No associated gene			
+000044501		No associated gene			
+000044469		No associated gene			
+000044489		No associated gene			
+P31809	SWISS-PROT	MGI:1347245	Ceacam1	CEA cell adhesion molecule 1	protein coding gene
+000044464		No associated gene			
+000044467		No associated gene			
+000044488		No associated gene			
+000044471		No associated gene			
+000044466		No associated gene			
+000044472		No associated gene			
+Q925P2	SWISS-PROT	MGI:1347246	Ceacam2	CEA cell adhesion molecule 2	protein coding gene
+000037067		No associated gene			
+Q9QZQ8	SWISS-PROT	MGI:1349392	Macroh2a1	macroH2A.1 histone	protein coding gene
+Q99KW3	SWISS-PROT	MGI:1349410	Triobp	TRIO and F-actin binding protein	protein coding gene
+A2ABV5	SWISS-PROT	MGI:1349442	Med14	mediator complex subunit 14	protein coding gene
+000037781		No associated gene			
+000037782		No associated gene			
+Q8K078	SWISS-PROT	MGI:1351866	Slco4a1	solute carrier organic anion transporter family, member 4a1	protein coding gene
+Q8R3L5	SWISS-PROT	MGI:1351867	Slco3a1	solute carrier organic anion transporter family, member 3a1	protein coding gene
+P70170	SWISS-PROT	MGI:1352630	Abcc9	ATP-binding cassette, sub-family C member 9	protein coding gene
+Q9QXZ9	SWISS-PROT	MGI:1353425	Opn4	opsin 4 (melanopsin)	protein coding gene
+000044810		No associated gene			
+P40336	SWISS-PROT	MGI:1353654	Vps26a	VPS26 retromer complex component A	protein coding gene
+Q9QUJ7	SWISS-PROT	MGI:1354713	Acsl4	acyl-CoA synthetase long-chain family member 4	protein coding gene
+Q80UW0	SWISS-PROT	MGI:1354959	Hs6st2	heparan sulfate 6-O-sulfotransferase 2	protein coding gene
+O88623	SWISS-PROT	MGI:1858178	Usp2	ubiquitin specific peptidase 2	protein coding gene
+Q9Z1W9	SWISS-PROT	MGI:1858416	Stk39	serine/threonine kinase 39	protein coding gene
+000044370		No associated gene			
+P70671	SWISS-PROT	MGI:1859179	Irf3	interferon regulatory factor 3	protein coding gene
+Q3V140	SWISS-PROT	MGI:1859515	Acrbp	proacrosin binding protein	protein coding gene
+000045361		No associated gene			
+Q9R0N6	SWISS-PROT	MGI:1859867	Syt8	synaptotagmin VIII	protein coding gene
+O88998	SWISS-PROT	MGI:1860437	Olfm1	olfactomedin 1	protein coding gene
+Q91V14	SWISS-PROT	MGI:1862037	Slc12a5	solute carrier family 12, member 5	protein coding gene
+Q8R5M8	SWISS-PROT	MGI:1889272	Cadm1	cell adhesion molecule 1	protein coding gene
+Q99MU3	SWISS-PROT	MGI:1889575	Adar	adenosine deaminase, RNA-specific	protein coding gene
+Q91WG4	SWISS-PROT	MGI:1889642	Elp2	elongator acetyltransferase complex subunit 2	protein coding gene
+Q9R1E0	SWISS-PROT	MGI:1890077	Foxo1	forkhead box O1	protein coding gene
+Q99PJ1	SWISS-PROT	MGI:1891428	Pcdh15	protocadherin 15	protein coding gene
+Q9CZ42	SWISS-PROT	MGI:1913353	Naxd	NAD(P)HX dehydratase	protein coding gene
+Q9EPR2	SWISS-PROT	MGI:1913600	Pla2g12a	phospholipase A2, group XIIA	protein coding gene
+Q8K450	SWISS-PROT	MGI:1913972	Spag16	sperm associated antigen 16	protein coding gene
+Q9CYI4	SWISS-PROT	MGI:1914228	Luc7l	Luc7-like	protein coding gene
+Q9CWU5	SWISS-PROT	MGI:1914241	Khdc3	KH domain containing 3, subcortical maternal complex member	protein coding gene
+Q920D3	SWISS-PROT	MGI:1914249	Med28	mediator complex subunit 28	protein coding gene
+000049974		No associated gene			
+Q9CZ82	SWISS-PROT	MGI:1914469	Med18	mediator complex subunit 18	protein coding gene
+Q9CXU1	SWISS-PROT	MGI:1914529	Med31	mediator complex subunit 31	protein coding gene
+Q9CQA5	SWISS-PROT	MGI:1914631	Med4	mediator complex subunit 4	protein coding gene
+Q9DBS8	SWISS-PROT	MGI:1914713	Poc5	POC5 centriolar protein	protein coding gene
+Q810U5	SWISS-PROT	MGI:1914751	Ccdc50	coiled-coil domain containing 50	protein coding gene
+Q9D9V2	SWISS-PROT	MGI:1915003	Eqtn	equatorin, sperm acrosome associated	protein coding gene
+Q09XV5	SWISS-PROT	MGI:1915022	Chd8	chromodomain helicase DNA binding protein 8	protein coding gene
+Q9D7W5	SWISS-PROT	MGI:1915269	Med8	mediator complex subunit 8	protein coding gene
+Q8K0B2	SWISS-PROT	MGI:1915671	Lmbrd1	LMBR1 domain containing 1	protein coding gene
+Q8R0L9	SWISS-PROT	MGI:1915724	Tada3	transcriptional adaptor 3	protein coding gene
+Q3TEW6	SWISS-PROT	MGI:1915731	Mpzl1	myelin protein zero-like 1	protein coding gene
+Q14BU0	SWISS-PROT	MGI:1915777	Ucma	upper zone of growth plate and cartilage matrix associated	protein coding gene
+Q99P72	SWISS-PROT	MGI:1915835	Rtn4	reticulon 4	protein coding gene
+Q7TNV1	SWISS-PROT	MGI:1916202	Tlcd3b	TLC domain containing 3B	protein coding gene
+Q9DB40	SWISS-PROT	MGI:1916225	Med27	mediator complex subunit 27	protein coding gene
+Q80YE7	SWISS-PROT	MGI:1916885	Dapk1	death associated protein kinase 1	protein coding gene
+Q3UA06	SWISS-PROT	MGI:1916966	Trip13	thyroid hormone receptor interactor 13	protein coding gene
+Q921D4	SWISS-PROT	MGI:1917042	Med6	mediator complex subunit 6	protein coding gene
+Q8R2F2	SWISS-PROT	MGI:1917309	Degs2	delta 4-desaturase, sphingolipid 2	protein coding gene
+Q80YQ2	SWISS-PROT	MGI:1917458	Med23	mediator complex subunit 23	protein coding gene
+Q7TN02	SWISS-PROT	MGI:1917875	Med26	mediator complex subunit 26	protein coding gene
+Q58A65	SWISS-PROT	MGI:1918084	Spag9	sperm associated antigen 9	protein coding gene
+Q99LQ1	SWISS-PROT	MGI:1918320	Mbip	MAP3K12 binding inhibitory protein 1	protein coding gene
+Q8BVM7	SWISS-PROT	MGI:1918359	Flacc1	flagellum associated containing coiled-coil domains 1	protein coding gene
+Q7TNK1	SWISS-PROT	MGI:1918387	Rfx4	regulatory factor X, 4 (influences HLA class II expression)	protein coding gene
+Q8CGN4	SWISS-PROT	MGI:1918708	Bcor	BCL6 interacting corepressor	protein coding gene
+Q8CD54	SWISS-PROT	MGI:1918781	Piezo2	piezo-type mechanosensitive ion channel component 2	protein coding gene
+000050540		No associated gene			
+Q78IQ7	SWISS-PROT	MGI:1919277	Slc39a4	solute carrier family 39 (zinc transporter), member 4	protein coding gene
+Q9ES64	SWISS-PROT	MGI:1919338	Ush1c	USH1 protein network component harmonin	protein coding gene
+Q8VD37	SWISS-PROT	MGI:1920344	Sgip1	SH3-domain GRB2-like (endophilin) interacting protein 1	protein coding gene
+Q6KAQ7	SWISS-PROT	MGI:1920453	Zzz3	zinc finger, ZZ domain containing 3	protein coding gene
+Q8K1M6	SWISS-PROT	MGI:1921256	Dnm1l	dynamin 1-like	protein coding gene
+000044864		No associated gene			
+Q925T6	SWISS-PROT	MGI:1921303	Grip1	glutamate receptor interacting protein 1	protein coding gene
+000035640		No associated gene			
+P58281	SWISS-PROT	MGI:1921393	Opa1	OPA1, mitochondrial dynamin like GTPase	protein coding gene
+Q9DA08	SWISS-PROT	MGI:1922815	Sgf29	SAGA complex associated factor 29	protein coding gene
+Q8K4K6	SWISS-PROT	MGI:1922985	Pank1	pantothenate kinase 1	protein coding gene
+Q91ZX6	SWISS-PROT	MGI:1923076	Senp2	SUMO/sentrin specific peptidase 2	protein coding gene
+Q7TSD4	SWISS-PROT	MGI:1923820	Tbata	thymus, brain and testes associated	protein coding gene
+Q8R4D1	SWISS-PROT	MGI:1924281	Slc9a8	solute carrier family 9 (sodium/hydrogen exchanger), member 8	protein coding gene
+Q9D666	SWISS-PROT	MGI:1924303	Sun1	Sad1 and UNC84 domain containing 1	protein coding gene
+000045529		No associated gene			
+Q9ERM2	SWISS-PROT	MGI:1925619	Icam4	intercellular adhesion molecule 4, Landsteiner-Wiener blood group	protein coding gene
+Q6ZPI0	SWISS-PROT	MGI:1925835	Jade1	jade family PHD finger 1	protein coding gene
+Q76LL6	SWISS-PROT	MGI:1925847	Fhod3	formin homology 2 domain containing 3	protein coding gene
+000044350		No associated gene			
+A2AGH6	SWISS-PROT	MGI:1926212	Med12	mediator complex subunit 12	protein coding gene
+Q9QXE4	SWISS-PROT	MGI:1926609	Trp53inp1	transformation related protein 53 inducible nuclear protein 1	protein coding gene
+Q9Z206	SWISS-PROT	MGI:1927138	Net1	neuroepithelial cell transforming gene 1	protein coding gene
+Q99KG5	SWISS-PROT	MGI:1927471	Lsr	lipolysis stimulated lipoprotein receptor	protein coding gene
+000049782		No associated gene			
+Q8R104	SWISS-PROT	MGI:1927665	Sirt3	sirtuin 3	protein coding gene
+Q99MZ3	SWISS-PROT	MGI:1927999	Mlxipl	MLX interacting protein-like	protein coding gene
+Q9Z0V1	SWISS-PROT	MGI:1928743	Kcnd3	potassium voltage-gated channel, Shal-related family, member 3	protein coding gene
+P56857	SWISS-PROT	MGI:1929209	Cldn18	claudin 18	protein coding gene
+Q9R0X0	SWISS-PROT	MGI:1929648	Med20	mediator complex subunit 20	protein coding gene
+Q8K0L0	SWISS-PROT	MGI:1929743	Asb2	ankyrin repeat and SOCS box-containing 2	protein coding gene
+000044486		No associated gene			
+Q91ZD1	SWISS-PROT	MGI:1930813	Osr2	odd-skipped related 2	protein coding gene
+Q9ESX2	SWISS-PROT	MGI:1932575	Sp6	trans-acting transcription factor 6	protein coding gene
+Q8BP71	SWISS-PROT	MGI:1933973	Rbfox2	RNA binding protein, fox-1 homolog (C. elegans) 2	protein coding gene
+Q925S4	SWISS-PROT	MGI:2135548	Il24	interleukin 24	protein coding gene
+Q99NH2	SWISS-PROT	MGI:2135608	Pard3	par-3 family cell polarity regulator	protein coding gene
+Q924H2	SWISS-PROT	MGI:2137379	Med15	mediator complex subunit 15	protein coding gene
+Q8VIM5	SWISS-PROT	MGI:2137495	Myocd	myocardin	protein coding gene
+Q9JKB3	SWISS-PROT	MGI:2137670	Ybx3	Y box protein 3	protein coding gene
+Q9DCB1	SWISS-PROT	MGI:2138069	Hmgn3	high mobility group nucleosomal binding domain 3	protein coding gene
+Q80SX8	SWISS-PROT	MGI:2143057	Pif1	PIF1 5'-to-3' DNA helicase	protein coding gene
+Q8K4T3	SWISS-PROT	MGI:2144047	Stradb	STE20-related kinase adaptor beta	protein coding gene
+Q8CHV6	SWISS-PROT	MGI:2144471	Tada2a	transcriptional adaptor 2A	protein coding gene
+Q9JHU3	SWISS-PROT	MGI:2145349	Cdk20	cyclin dependent kinase 20	protein coding gene
+Q8R5G7	SWISS-PROT	MGI:2147274	Arap3	ArfGAP with RhoGAP domain, ankyrin repeat and PH domain 3	protein coding gene
+Q99JA0	SWISS-PROT	MGI:2151253	Calca	calcitonin/calcitonin-related polypeptide, alpha	protein coding gene
+P70160	SWISS-PROT	MGI:2151253	Calca	calcitonin/calcitonin-related polypeptide, alpha	protein coding gene
+000027223		No associated gene			
+Q3T9X0	SWISS-PROT	MGI:2152844	Slc2a9	solute carrier family 2 (facilitated glucose transporter), member 9	protein coding gene
+Q9EQZ7	SWISS-PROT	MGI:2152972	Rims2	regulating synaptic membrane exocytosis 2	protein coding gene
+P58390	SWISS-PROT	MGI:2153182	Kcnn2	potassium intermediate/small conductance calcium-activated channel, subfamily N, member 2	protein coding gene
+Q8C460	SWISS-PROT	MGI:2153887	Eri3	exoribonuclease 3	protein coding gene
+P61965	SWISS-PROT	MGI:2155884	Wdr5	WD repeat domain 5	protein coding gene
+Q8VH51	SWISS-PROT	MGI:2157953	Rbm39	RNA binding motif protein 39	protein coding gene
+Q6PGF3	SWISS-PROT	MGI:2158394	Med16	mediator complex subunit 16	protein coding gene
+Q8K4C2	SWISS-PROT	MGI:2159336	Il17rc	interleukin 17 receptor C	protein coding gene
+Q0QWG9	SWISS-PROT	MGI:2176213	Grid2ip	glutamate receptor, ionotropic, delta 2 (Grid2) interacting protein 1	protein coding gene
+000037301		No associated gene			
+Q91ZE9	SWISS-PROT	MGI:2176433	Bmf	BCL2 modifying factor	protein coding gene
+Q8BIF0	SWISS-PROT	MGI:2177151	Cd99l2	CD99 antigen-like 2	protein coding gene
+000035652		No associated gene			
+000044836		No associated gene			
+Q8K4Z3	SWISS-PROT	MGI:2180167	Naxe	NAD(P)HX epimerase	protein coding gene
+Q80WJ1	SWISS-PROT	MGI:2181461	Ggn	gametogenetin	protein coding gene
+Q8VCD5	SWISS-PROT	MGI:2182585	Med17	mediator complex subunit 17	protein coding gene
+Q6ZPK0	SWISS-PROT	MGI:2384756	Phf21a	PHD finger protein 21A	protein coding gene
+Q8BVF7	SWISS-PROT	MGI:2385110	Aph1a	aph1 homolog A, gamma secretase subunit	protein coding gene
+A2AJ88	SWISS-PROT	MGI:2385325	Pnpla7	patatin-like phospholipase domain containing 7	protein coding gene
+Q9ESL4	SWISS-PROT	MGI:2443258	Map3k20	mitogen-activated protein kinase kinase kinase 20	protein coding gene
+Q8BXP5	SWISS-PROT	MGI:2443398	Ankrd33	ankyrin repeat domain 33	protein coding gene
+Q6NS45	SWISS-PROT	MGI:2443639	Ccdc66	coiled-coil domain containing 66	protein coding gene
+Q5DQR4	SWISS-PROT	MGI:2443815	Stxbp5l	syntaxin binding protein 5-like	protein coding gene
+Q8VCQ6	SWISS-PROT	MGI:2444110	Sgms1	sphingomyelin synthase 1	protein coding gene
+000045374		No associated gene			
+000028845		No associated gene			
+Q80VA5	SWISS-PROT	MGI:2444417	Sh3tc2	SH3 domain and tetratricopeptide repeats 2	protein coding gene
+Q8BG87	SWISS-PROT	MGI:2446229	Tet3	tet methylcytosine dioxygenase 3	protein coding gene
+000035654		No associated gene			
+000035602		No associated gene			
+Q3TUF7	SWISS-PROT	MGI:2447762	Yeats2	YEATS domain containing 2	protein coding gene
+Q4VAA2	SWISS-PROT	MGI:2448759	Cdv3	carnitine deficiency-associated gene expressed in ventricle 3	protein coding gene
+Q6ZWQ0	SWISS-PROT	MGI:2449316	Syne2	spectrin repeat containing, nuclear envelope 2	protein coding gene
+Q8CIZ9	SWISS-PROT	MGI:2450016	Nox1	NADPH oxidase 1	protein coding gene
+Q810B3	SWISS-PROT	MGI:2669849	Bsx	brain specific homeobox	protein coding gene
+Q5SXI5	SWISS-PROT	MGI:2679270	Zkscan17	zinc finger with KRAB and SCAN domains 17	protein coding gene
+000045531		No associated gene			
+000045532		No associated gene			
+A2CG49	SWISS-PROT	MGI:2685385	Kalrn	kalirin, RhoGEF kinase	protein coding gene
+Q5SWW4	SWISS-PROT	MGI:3029632	Med13	mediator complex subunit 13	protein coding gene
+Q5SS91	SWISS-PROT	MGI:3041199	Sun3	Sad1 and UNC84 domain containing 3	protein coding gene
+Q14AT5	SWISS-PROT	MGI:3052714	Ano7	anoctamin 7	protein coding gene
+000050539		No associated gene			
+E2JF22	SWISS-PROT	MGI:3603204	Piezo1	piezo-type mechanosensitive ion channel component 1	protein coding gene
+Q3U4H6	SWISS-PROT	MGI:3605542	Hexd	hexosaminidase D	protein coding gene
+D2EAC2	SWISS-PROT	MGI:3828086	Zbed6	zinc finger, BED type containing 6	protein coding gene
+A2ASQ1	SWISS-PROT	MGI:87961	Agrn	agrin	protein coding gene
+Q9R0Y5	SWISS-PROT	MGI:87977	Ak1	adenylate kinase 1	protein coding gene
+000050596		No associated gene			
+000049940		No associated gene			
+Q64373	SWISS-PROT	MGI:88139	Bcl2l1	BCL2-like 1	protein coding gene
+000050190		No associated gene			
+P15379	SWISS-PROT	MGI:88338	Cd44	CD44 antigen	protein coding gene
+O88587	SWISS-PROT	MGI:88470	Comt	catechol-O-methyltransferase	protein coding gene
+000037136		No associated gene			
+P06797	SWISS-PROT	MGI:88564	Ctsl	cathepsin L	protein coding gene
+Q62151	SWISS-PROT	MGI:893592	Ager	advanced glycosylation end product-specific receptor	protein coding gene
+000045351		No associated gene			
+000045357		No associated gene			
+000045355		No associated gene			
+000045367		No associated gene			
+Q60748	SWISS-PROT	MGI:894312	Crhr2	corticotropin releasing hormone receptor 2	protein coding gene
+O55203	SWISS-PROT	MGI:894670	Ldb2	LIM domain binding 2	protein coding gene
+000049834		No associated gene			
+000049838		No associated gene			
+000049833		No associated gene			
+P61168	SWISS-PROT	MGI:94924	Drd2	dopamine receptor D2	protein coding gene
+P30728	SWISS-PROT	MGI:94925	Drd3	dopamine receptor D3	protein coding gene
+P08152	SWISS-PROT	MGI:95296	Egr2	early growth response 2	protein coding gene
+000037245		No associated gene			
+000044848		No associated gene			
+000044847		No associated gene			
+P49772	SWISS-PROT	MGI:95560	Flt3l	FMS-like tyrosine kinase 3 ligand	protein coding gene
+P17679	SWISS-PROT	MGI:95661	Gata1	GATA binding protein 1	protein coding gene
+Q91XP5	SWISS-PROT	MGI:95749	Glra3	glycine receptor, alpha 3 subunit	protein coding gene
+000044498		No associated gene			
+P39087	SWISS-PROT	MGI:95815	Grik2	glutamate receptor, ionotropic, kainate 2 (beta 2)	protein coding gene
+P35438	SWISS-PROT	MGI:95819	Grin1	glutamate receptor, ionotropic, NMDA1 (zeta 1)	protein coding gene
+P06537	SWISS-PROT	MGI:95824	Nr3c1	nuclear receptor subfamily 3, group C, member 1	protein coding gene
+000044840		No associated gene			
+000044843		No associated gene			
+000044821		No associated gene			
+P17710	SWISS-PROT	MGI:96103	Hk1	hexokinase 1	protein coding gene
+P09631	SWISS-PROT	MGI:96180	Hoxa9	homeobox A9	protein coding gene
+000050395		No associated gene			
+000044494		No associated gene			
+000044511		No associated gene			
+000035707		No associated gene			
+000035709		No associated gene			
+000045524		No associated gene			
+000045525		No associated gene			
+P26952	SWISS-PROT	MGI:96553	Il3ra	interleukin 3 receptor, alpha chain	protein coding gene
+Q61739	SWISS-PROT	MGI:96605	Itga6	integrin alpha 6	protein coding gene
+P09055	SWISS-PROT	MGI:96610	Itgb1	integrin beta 1 (fibronectin receptor beta)	protein coding gene
+Q61762	SWISS-PROT	MGI:96662	Kcna5	potassium voltage-gated channel, shaker-related subfamily, member 5	protein coding gene
+Q04859	SWISS-PROT	MGI:96913	Mak	male germ cell-associated kinase	protein coding gene
+P33434	SWISS-PROT	MGI:97009	Mmp2	matrix metallopeptidase 2	protein coding gene
+P23708	SWISS-PROT	MGI:97316	Nfya	nuclear transcription factor-Y alpha	protein coding gene
+P15209	SWISS-PROT	MGI:97384	Ntrk2	neurotrophic tyrosine kinase, receptor, type 2	protein coding gene
+000037287		No associated gene			
+P63015	SWISS-PROT	MGI:97490	Pax6	paired box 6	protein coding gene
+O35317	SWISS-PROT	MGI:97496	Pbx3	pre B cell leukemia homeobox 3	protein coding gene
+Q04592	SWISS-PROT	MGI:97515	Pcsk5	proprotein convertase subtilisin/kexin type 5	protein coding gene
+Q08481	SWISS-PROT	MGI:97537	Pecam1	platelet/endothelial cell adhesion molecule 1	protein coding gene
+P47857	SWISS-PROT	MGI:97548	Pfkm	phosphofructokinase, muscle	protein coding gene
+Q9JJV2	SWISS-PROT	MGI:97550	Pfn2	profilin 2	protein coding gene
+Q00175	SWISS-PROT	MGI:97567	Pgr	progesterone receptor	protein coding gene
+P52480	SWISS-PROT	MGI:97591	Pkm	pyruvate kinase, muscle	protein coding gene
+P68404	SWISS-PROT	MGI:97596	Prkcb	protein kinase C, beta	protein coding gene
+000045530		No associated gene			
+Q8R3B1	SWISS-PROT	MGI:97614	Plcd1	phospholipase C, delta 1	protein coding gene
+P60202	SWISS-PROT	MGI:97623	Plp1	proteolipid protein (myelin) 1	protein coding gene
+P37238	SWISS-PROT	MGI:97747	Pparg	peroxisome proliferator activated receptor gamma	protein coding gene
+P15331	SWISS-PROT	MGI:97774	Prph	peripherin	protein coding gene
+P30557	SWISS-PROT	MGI:97795	Ptger3	prostaglandin E receptor 3 (subtype EP3)	protein coding gene
+000050324		No associated gene			
+Q9ET01	SWISS-PROT	MGI:97829	Pygl	liver glycogen phosphorylase	protein coding gene
+Q9QYS9	SWISS-PROT	MGI:97837	Qki	quaking, KH domain containing RNA binding	protein coding gene
+000037786		No associated gene			
+000037785		No associated gene			
+P11416	SWISS-PROT	MGI:97856	Rara	retinoic acid receptor, alpha	protein coding gene
+P22605	SWISS-PROT	MGI:97857	Rarb	retinoic acid receptor, beta	protein coding gene
+P18911	SWISS-PROT	MGI:97858	Rarg	retinoic acid receptor, gamma	protein coding gene
+000050222		No associated gene			
+P06281	SWISS-PROT	MGI:97898	Ren1	renin 1 structural	protein coding gene
+P35546	SWISS-PROT	MGI:97902	Ret	ret proto-oncogene	protein coding gene
+P28700	SWISS-PROT	MGI:98214	Rxra	retinoid X receptor alpha	protein coding gene
+P28704	SWISS-PROT	MGI:98215	Rxrb	retinoid X receptor beta	protein coding gene
+P28705	SWISS-PROT	MGI:98216	Rxrg	retinoid X receptor gamma	protein coding gene
+000049831		No associated gene			
+Q9JJV9	SWISS-PROT	MGI:98251	Scn5a	sodium channel, voltage-gated, type V, alpha	protein coding gene
+000037269		No associated gene			
+P60879	SWISS-PROT	MGI:98331	Snap25	synaptosomal-associated protein 25	protein coding gene
+P35710	SWISS-PROT	MGI:98367	Sox5	SRY (sex determining region Y)-box 5	protein coding gene
+P14719	SWISS-PROT	MGI:98427	Il1rl1	interleukin 1 receptor-like 1	protein coding gene
+O88935	SWISS-PROT	MGI:98460	Syn1	synapsin I	protein coding gene
+P25976	SWISS-PROT	MGI:98512	Ubtf	upstream binding transcription factor, RNA polymerase I	protein coding gene
+O08710	SWISS-PROT	MGI:98733	Tg	thyroglobulin	protein coding gene
+P63058	SWISS-PROT	MGI:98742	Thra	thyroid hormone receptor alpha	protein coding gene
+P22561	SWISS-PROT	MGI:98968	Wt1	WT1 transcription factor	protein coding gene
+O35426	SWISS-PROT	MGI:98970	Xbp1	X-box binding protein 1	protein coding gene
+Q61985	SWISS-PROT	MGI:99421	Nfe2l1	nuclear factor, erythroid derived 2,-like 1	protein coding gene
+000049793		No associated gene			
+000049795		No associated gene			
+000049791		No associated gene			
+Q60636	SWISS-PROT	MGI:99655	Prdm1	PR domain containing 1, with ZNF domain	protein coding gene
+000045550		No associated gene			
+Q07813	SWISS-PROT	MGI:99702	Bax	BCL2-associated X protein	protein coding gene
+P18581	SWISS-PROT	MGI:99828	Slc7a2	solute carrier family 7 (cationic amino acid transporter, y+ system), member 2	protein coding gene
+Q08775	SWISS-PROT	MGI:99829	Runx2	runt related transcription factor 2	protein coding gene
+Q9Z2D6	SWISS-PROT	MGI:99918	Mecp2	methyl CpG binding protein 2	protein coding gene
+Q08460	SWISS-PROT	MGI:99923	Kcnma1	potassium large conductance calcium-activated channel, subfamily M, alpha member 1	protein coding gene

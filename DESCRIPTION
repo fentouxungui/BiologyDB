@@ -20,6 +20,8 @@ Suggests:
     org.Mm.eg.db,
     org.Hs.eg.db,
     org.Dm.eg.db,
-    ZhangRtools
+    ZhangRtools,
+    ontologyIndex,
+    janitor
 Depends: 
     R (>= 2.10)

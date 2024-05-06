@@ -10,7 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-source("../R/functions.R")
 library(rtracklayer)
 library(devtools)
 library(dplyr)
@@ -1398,9 +1397,48 @@ UniProt_Human_GeneFunction <- uniprot
 usethis::use_data(UniProt_Human_GeneFunction, overwrite = TRUE)
 ```
 
+## GENEONTOLOGY
 
+> [详解如何获取物种所有基因对应的GO注释](https://cloud.tencent.com/developer/article/1625243)
 
+下载位置： https://current.geneontology.org/products/pages/downloads.html
 
+https://geneontology.org/docs/download-ontology/ 页面下载： https://purl.obolibrary.org/obo/go/go-basic.obo
+
+```{r}
+df <- read.delim("../inst/extdata/GENEONTOLOGY/goa_human.gaf.gz",skip = 41,header = FALSE)
+# https://geneontology.org/docs/go-annotation-file-gaf-format-2.2/
+colnames(df) <- c("DB", "ProteinID", "Symbol","Qualifier","GOID","Reference", "EvidenceCode","WithOrFrom","Aspect", 
+                  "GeneProducts","Synonym","Type","Taxon", "Date","AssignedBy","AnnotationExtension","GeneProductsFromID")
+library(ontologyIndex)
+gs <- get_OBO("../inst/extdata/GENEONTOLOGY/go-basic.obo")
+table(df$GOID %in% names(gs$name))
+df$GOName <- gs$name[df$GOID]
+df.sub <- df[,c("Symbol","GOID","GOName","Aspect")]
+res <- list()
+aspect.name <- c("MolecularFunction","BiologicalProcess","CellularComponent")
+names(aspect.name) <- c("F","P","C")
+for (i in unique(df.sub$Aspect)) {
+  df.sub.sub <- df.sub[df.sub$Aspect == i,]
+  df.sub.sub.aggr <- Aggregate_df(df = df.sub.sub, id = "Symbol")
+  df.sub.sub.aggr$Aspect <- NULL
+  colnames(df.sub.sub.aggr)[2:3] <- paste(aspect.name[i],colnames(df.sub.sub.aggr)[2:3],sep = "_")
+  res[[aspect.name[i]]] <- df.sub.sub.aggr
+}
+```
+
+```{r}
+# saveRDS(res,file = "temp.rds")
+# run codes bellow under a server!
+# results <- merge(res$MolecularFunction, res$CellularComponent, all= TRUE, by = "Symbol")
+# results <- merge(results, res$BiologicalProcess, all= TRUE, by = "Symbol")
+# results[is.na(results)] <- "-"
+GENEONTOLOGY_Human <- readRDS("../inst/extdata/GENEONTOLOGY/go.rds")
+load("../data/GENCODE_Human_Genes.rda")
+table(GENEONTOLOGY_Human$Symbol %in% GENCODE_Human_Genes$Symbol)
+GENEONTOLOGY_Human$Ensembl.Added <- GENCODE_Human_Genes$Ensembl[match(GENEONTOLOGY_Human$Symbol, GENCODE_Human_Genes$Symbol)]
+usethis::use_data(GENEONTOLOGY_Human, overwrite = TRUE)
+```
 
 
 

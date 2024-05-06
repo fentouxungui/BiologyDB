@@ -9,8 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+> Attention: 可以使用在线工具https://www.informatics.jax.org/batch进行小鼠基因名（支持混合类型）的更新和转换！
+另外，发现很多MGI id不存在对应的Ensembl ID。
+
+
 ```{r}
-source("../R/functions.R")
 library(devtools)
 library(rtracklayer)
 library(dplyr)
@@ -1023,6 +1026,100 @@ usethis::use_data(UniProt_Mouse_GeneFunction, overwrite = TRUE)
 ```
 
 
+## GENEONTOLOGY
 
+> [详解如何获取物种所有基因对应的GO注释](https://cloud.tencent.com/developer/article/1625243)
+
+下载位置： https://current.geneontology.org/products/pages/downloads.html
+
+https://geneontology.org/docs/download-ontology/ 页面下载： https://purl.obolibrary.org/obo/go/go-basic.obo
+
+```{r}
+df <- read.delim("../inst/extdata/GENEONTOLOGY/mgi.gaf.gz",skip = 36,header = FALSE)
+# https://geneontology.org/docs/go-annotation-file-gaf-format-2.2/
+colnames(df) <- c("DB", "ProteinID", "Symbol","Qualifier","GOID","Reference", "EvidenceCode","WithOrFrom","Aspect", 
+                  "GeneProducts","Synonym","Type","Taxon", "Date","AssignedBy","AnnotationExtension","GeneProductsFromID")
+id.unique <- unique(df$ProteinID)
+# write.csv(id.unique, file = "IDs.unique.csv",row.names = FALSE,quote = FALSE)
+# 先用proteinID做第一次id更新
+id.res <-read.delim("./MGIBatchReport_IDs.txt",stringsAsFactors = FALSE)
+id.lost <- id.res[id.res$Input.Type == "",]
+id.lost$Input <- gsub("-\\d+","",id.lost$Input)
+# write.csv(id.lost$Input, file = "IDs.2.unique.csv",row.names = FALSE,quote = FALSE)
+# 用没有匹配上的，去除末尾的-数字后缀，在做一个id更新
+id.2.res <-read.delim("./MGIBatchReport_IDs-2.txt",stringsAsFactors = FALSE)
+table(id.2.res$Input.Type)
+id.mapped <- rbind(id.res[id.res$Input.Type != "",], id.2.res[id.2.res$Input.Type != "",])
+# 最后的id匹配结果
+id.mapped <- id.mapped[!duplicated(id.mapped$Input),]
+table(grepl("^MGI",id.mapped$MGI.Gene.Marker.ID))
+#janitor::get_dupes(id.mapped,  MGI.Gene.Marker.ID)  
+#janitor::get_dupes(id.mapped,  Symbol)
+#经查，每个MGI id和每个Symbol是一一对应的。
+id.mapped.unique <- distinct(id.mapped, MGI.Gene.Marker.ID, Symbol)
+table(duplicated(id.mapped.unique$MGI.Gene.Marker.ID))
+table(duplicated(id.mapped.unique$Symbol))
+id.sym.mapping <- id.mapped.unique$Symbol
+names(id.sym.mapping) <- id.mapped.unique$MGI.Gene.Marker.ID
+
+df$ProteinID <- gsub("-\\d+","",df$ProteinID)
+df <- df[df$ProteinID %in% id.mapped$Input,]
+df$ProteinID <- id.mapped$MGI.Gene.Marker.ID[match(df$ProteinID, id.mapped$Input)]
+df$Symbol <- id.mapped$Symbol[match(df$ProteinID, id.mapped$Input)]
+
+df <- distinct(df, ProteinID, GOID, .keep_all = TRUE) # 去除重复的
+dim(df)
+
+# 测试了symbol，结论是用ProteinID列就可以了！
+# symbol.unique <- unique(df$Symbol)
+# write.csv(symbol.unique, file = "Symbols.unique.csv",row.names = FALSE,quote = FALSE)
+# sys.res <- read.delim("./MGIBatchReport_Symbols.txt",stringsAsFactors = FALSE)
+# id.lost.symbols <- unique(df$ProteinID[df$ProteinID %in% id.lost$Input])
+# sys.res.lost.lost <- sys.res[sys.res$Input %in% id.lost.symbols,]
+# table(sys.res.lost.lost$Input.Type)
+
+library(ontologyIndex)
+gs <- get_OBO("../inst/extdata/GENEONTOLOGY/go-basic.obo")
+table(df$GOID %in% names(gs$name))
+df$GOName <- gs$name[df$GOID]
+```
+
+```{r}
+# 为什么不用sumbol，因为有30多个NA值
+df.sub <- df[,c("ProteinID","GOID","GOName","Aspect")]
+# remove 3 root: GO:0005575:cellular_component, GO:0003674:molecular_function, GO:0008150: biological_process
+df.sub <- df.sub[!df.sub$GOID %in% c("GO:0005575", "GO:0003674", "GO:0008150"),]
+res <- list()
+aspect.name <- c("MolecularFunction","BiologicalProcess","CellularComponent")
+names(aspect.name) <- c("F","P","C")
+for (i in unique(df.sub$Aspect)) {
+  df.sub.sub <- df.sub[df.sub$Aspect == i,]
+  df.sub.sub.aggr <- Aggregate_df(df = df.sub.sub, id = "ProteinID")
+  df.sub.sub.aggr$Aspect <- NULL
+  colnames(df.sub.sub.aggr)[2:3] <- paste(aspect.name[i],colnames(df.sub.sub.aggr)[2:3],sep = "_")
+  res[[aspect.name[i]]] <- df.sub.sub.aggr
+}
+```
+
+
+```{r}
+# saveRDS(res,file = "temp.rds")
+# run codes bellow under a server!
+# results <- merge(res$MolecularFunction, res$CellularComponent, all= TRUE, by = "Symbol")
+# results <- merge(results, res$BiologicalProcess, all= TRUE, by = "Symbol")
+# results[is.na(results)] <- "-"
+```
+
+```{r}
+GENEONTOLOGY_Mouse <- readRDS("./mouse.go.rds")
+GENEONTOLOGY_Mouse$Symbol <- id.sym.mapping[GENEONTOLOGY_Mouse$ProteinID]
+colnames(GENEONTOLOGY_Mouse)[1] <- "MGI"
+GENEONTOLOGY_Mouse <- GENEONTOLOGY_Mouse[, c( "MGI", "Symbol", "MolecularFunction_GOID",  "MolecularFunction_GOName", "CellularComponent_GOID", "CellularComponent_GOName", "BiologicalProcess_GOID" , "BiologicalProcess_GOName")]
+
+load("../data/GENCODE_Mouse_Genes.rda")
+table(GENEONTOLOGY_Mouse$Symbol %in% GENCODE_Mouse_Genes$Symbol)
+GENEONTOLOGY_Mouse$Ensembl.Added <- GENCODE_Mouse_Genes$Ensembl[match(GENEONTOLOGY_Mouse$Symbol, GENCODE_Mouse_Genes$Symbol)]
+usethis::use_data(GENEONTOLOGY_Mouse, overwrite = TRUE)
+```
 
 
