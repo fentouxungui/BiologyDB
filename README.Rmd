@@ -28,8 +28,11 @@ knitr::opts_chunk$set(
 
 ```{r eval=FALSE}
 library(devtools)
+options(options(timeout = max(600, getOption("timeout")))) # install size about 500Mb
 install_github("fentouxungui/BiologyDB")
 ```
+
+如果下载不下来，建议下载Release里的文件，然后本地安装。
 
 ## 注意
 
