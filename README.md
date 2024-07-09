@@ -24,6 +24,13 @@ install_github("fentouxungui/BiologyDB")
 
 如果下载不下来，建议下载Release里的文件，然后本地安装。
 
+如果仅仅是使用整理好的数据，建议安装`fentouxungui/BiologyDBLight`包。
+
+``` r
+library(devtools)
+install_github("fentouxungui/BiologyDBLight")
+```
+
 ## 注意
 
 首先，由于各种各样的原因，并非所有的数据都整理的很好【更新到最新ID】。另外，建议在注释本地数据时，先更新本地基因数据到最新的ID。
