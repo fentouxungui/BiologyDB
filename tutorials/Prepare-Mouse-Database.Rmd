@@ -129,7 +129,7 @@ table(results$label)
 results$label <- NULL
 results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
-colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
+# colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
 
 AnimalTFDB_Mouse_TF <- results
 usethis::use_data(AnimalTFDB_Mouse_TF, overwrite = TRUE)
@@ -164,7 +164,7 @@ table(results$label)
 results$label <- NULL
 results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
-colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
+# colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
 
 AnimalTFDB_Mouse_TFCofactors <- results
 usethis::use_data(AnimalTFDB_Mouse_TFCofactors, overwrite = TRUE)

@@ -145,7 +145,7 @@ results <- rbind(TFs$lost, TFs$matched[,colnames(TFs$lost)])
 table(duplicated(results$Ensembl))
 results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
-colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
+colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family","EntrezID")
 ```
 
 ```{r}
@@ -182,7 +182,7 @@ table(results$label)
 results$label <- NULL
 results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
-colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
+colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family","EntrezID")
 ```
 
 ```{r}

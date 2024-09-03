@@ -124,7 +124,7 @@ Reference: Lambert, S. A., Jolma, A., Campitelli, L. F., Das, P. K., Yin, Y., Al
 **预处理**
 
 ```{r}
-tf.full.database <- read.csv("../inst/extdata/The-Human-Transcription-Factors/DatabaseExtract_v_1.01.csv.gz", stringsAsFactors = FALSE)
+tf.full.database <- read.csv("../inst/extdata/The-Human-Transcription-Factors/DatabaseExtract_v_1.01.csv", stringsAsFactors = FALSE)
 tf.full.database <- tf.full.database[tf.full.database$Is.TF. == "Yes",]
 tf.full.database <- tf.full.database[,c(2,3,12,4,5)]
 dim(tf.full.database)
@@ -152,7 +152,7 @@ results$label <- NULL
 results$Is.TF. <- NULL
 results$Symbol <- gtf$Symbol[match(results$Ensembl.ID, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl.ID, gtf$Ensembl)]
-colnames(results) <- c("Ensembl","Symbol","Entrez","TF.DBD")
+colnames(results) <- c("Ensembl","HGNC.Symbol","Entrez","TF.DBD","Symbol","EntrezID")
 ```
 
 ```{r}
@@ -200,7 +200,7 @@ table(results$label)
 results$label <- NULL
 results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
-colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
+colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family", "EntrezID")
 ```
 
 ```{r}
@@ -238,7 +238,7 @@ table(results$label)
 results$label <- NULL
 results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
-colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
+colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family", "EntrezID")
 ```
 
 ```{r}
