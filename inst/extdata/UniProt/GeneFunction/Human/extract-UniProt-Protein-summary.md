@@ -2,7 +2,7 @@
 
 https://www.uniprot.org/
 
-
+https://www.uniprot.org/uniprotkb?query=Human&facets=reviewed%3Atrue%2Cmodel_organism%3A9606
 
 ![image-20230712164109268](D:\BaiduNetdiskWorkspace\Learning-bioinformatics-生物信息学笔记\NGS数据分析\Figures\image-20230712164109268.png)
 

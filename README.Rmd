@@ -13,10 +13,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r echo=FALSE, results="hide", message=FALSE}
+library(badger)
+```
+
 # BiologyDB
 
 <!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+`r badge_lifecycle("stable")`
+`r badge_devel("fentouxungui/SeuratExplorer", "rossellhayes")`
+`r badge_code_size("fentouxungui/SeuratExplorer")`
 <!-- badges: end -->
 
 > 为什么做这件事？
@@ -45,11 +51,11 @@ install_github("fentouxungui/BiologyDBLight")
 
 首先，由于各种各样的原因，并非所有的数据都整理的很好【更新到最新ID】。另外，建议在注释本地数据时，先更新本地基因数据到最新的ID。
 
-- 人的话，用HGNC提供的在线工具[Multi-symbol checker](https://www.genenames.org/tools/multi-symbol-checker/)进行更新，然后用[ZhangRtools](https://github.com/fentouxungui/ZhangRtools)包里的 **Check_hgnc_hits** 对匹配结果预处理。gtf version: [Gencode v45](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/latest_release/)
+- 人的话，用HGNC提供的在线工具[Multi-symbol checker](https://www.genenames.org/tools/multi-symbol-checker/)进行更新，然后用[ZhangRtools](https://github.com/fentouxungui/ZhangRtools)包里的 **Check_hgnc_hits** 对匹配结果预处理。gtf version: [Gencode v47](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/latest_release/)
 
-- 小鼠的话，用MGI提供的在线工具[MGI Batch Query](https://www.informatics.jax.org/batch)进行基因ID更新。gtf version: [Gencode vM34](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/latest_release/)
+- 小鼠的话，用MGI提供的在线工具[MGI Batch Query](https://www.informatics.jax.org/batch)进行基因ID更新。gtf version: [Gencode vM36](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/latest_release/)
 
-- 果蝇的话，用Flybase提供的在线工具[Batch Download](https://flybase.org/batchdownload)或[ID Validator](https://flybase.org/convert/id)进行ID更新。gtf version: [flybase r6.56](https://ftp.flybase.org/genomes/dmel/dmel_r6.56_FB2024_01/)
+- 果蝇的话，用Flybase提供的在线工具[Batch Download](https://flybase.org/batchdownload)或[ID Validator](https://flybase.org/convert/id)进行ID更新。gtf version: [flybase r6.62](https://flybase-ftp.s3.us-east-1.amazonaws.com/genomes/Drosophila_melanogaster/dmel_r6.62_FB2025_01/gtf/dmel-all-r6.62.gtf.gz)
 
 ## 数据
 

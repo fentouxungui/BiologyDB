@@ -1,7 +1,7 @@
 ---
 title: "Fly"
 author: "Zhang Yongchao"
-date: "2022-08-30"
+date: "2025-04-15"
 output: html_document
 ---
 
@@ -36,7 +36,7 @@ url:
 仅保留基因水平的信息
 
 ```{r}
-gtf <- as.data.frame(rtracklayer::import("../inst/extdata/Flybase/Genome/dmel-all-r6.56.gtf"))
+gtf <- as.data.frame(rtracklayer::import("../inst/extdata/Flybase/Genome/dmel-all-r6.62.gtf.gz"))
 table(gtf$type)
 gtf <- gtf[gtf$type %in% c("gene"),c("gene_id", "gene_symbol", "type", "seqnames", "start", "end", "width", "strand" )]
 head(gtf)
@@ -83,7 +83,7 @@ usethis::use_data(Flybase_Fly_Genes, overwrite = TRUE)
 https://ftp.flybase.net/releases/current/precomputed_files/genes/
 
 ```{r}
-df <- read.delim("../inst/extdata/Flybase/Summary/best_gene_summary_fb_2024_01.tsv",stringsAsFactors = FALSE)
+df <- read.delim("../inst/extdata/Flybase/Summary/best_gene_summary_fb_2025_01.tsv.gz",stringsAsFactors = FALSE)
 head(df)
 table(df$FBgn_ID %in% gtf$Ensembl)
 Flybase_Fly_BestGeneSummary <- df
@@ -91,14 +91,14 @@ usethis::use_data(Flybase_Fly_BestGeneSummary, overwrite = TRUE)
 ```
 
 ```{r}
-df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/gene_snapshots_fb_2024_01.tsv"))
+df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/gene_snapshots_fb_2025_01.tsv.gz"))
 head(df)
 table(df$FBgn_ID %in% gtf$Ensembl)
 Flybase_Fly_GeneSnapshots <- df
 usethis::use_data(Flybase_Fly_GeneSnapshots, overwrite = TRUE)
 ```
 ```{r}
-df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/automated_gene_summaries_fb_2024_01.tsv"))
+df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/automated_gene_summaries.tsv.gz"))
 head(df)
 table(df$FBgn_ID %in% gtf$Ensembl)
 Flybase_Fly_AutomatedGeneSummary <- df
@@ -106,16 +106,18 @@ usethis::use_data(Flybase_Fly_AutomatedGeneSummary, overwrite = TRUE)
 ```
 
 
-## Animal TF DB 3.0
+## Animal TF DB v4.0
 
-url: http://bioinfo.life.hust.edu.cn/AnimalTFDB/
+url: https://guolab.wchscu.cn/AnimalTFDB4/#/
 
 **TFs**
 
+url: https://guolab.wchscu.cn/AnimalTFDB4_static/download/TF_list_final/Drosophila_melanogaster_TF
+
 ```{r}
-TF <- read.delim("../inst/extdata/AnimalTFDB3/Drosophila_melanogaster/Drosophila_melanogaster_TF.txt.gz",stringsAsFactors = FALSE)
+TF <- read.delim("../inst/extdata/AnimalTFDBv4/Drosophila_melanogaster/Drosophila_melanogaster_TF.txt",stringsAsFactors = FALSE)
 head(TF)
-TF <- TF[,c("Ensembl", "Entrez.ID", "Symbol" , "Family")]
+TF <- TF[,c("Ensembl", "Entrez_ID", "Symbol" , "Family")]
 ```
 
 根据EnsemblID、Symbol和EntrezID匹配基因名。
@@ -125,23 +127,12 @@ TFs <- mapping_update(inputDF = TF,
                db = gtf, 
                by.input = "Ensembl", by.db = "Ensembl", 
                by.input.2 = "Symbol", by.db.2 = "Symbol",
-               by.input.3 = "Entrez.ID", by.db.3 = "EntrezID")
+               by.input.3 = "Entrez_ID", by.db.3 = "EntrezID")
 TFs$lost # 未匹配上的基因，经查，无法对应上。
 ```
 
 ```{r}
-TFs$lost[TFs$lost$Ensembl == "FBgn0284250","Entrez.ID"] <- "-"
-TFs$lost[TFs$lost$Ensembl == "FBgn0284250","Symbol"] <- "L"
-TFs$lost[TFs$lost$Ensembl == "FBgn0284250","Ensembl"] <- "FBgn0288433"
-
-TFs$lost[TFs$lost$Ensembl == "FBgn0037645","Entrez.ID"] <- "41069"
-TFs$lost[TFs$lost$Ensembl == "FBgn0037645","Symbol"] <- "ich"
-TFs$lost[TFs$lost$Ensembl == "FBgn0037645","Ensembl"] <- "FBgn0286204"
-```
-
-```{r}
-table(TFs$matched$label)
-results <- rbind(TFs$lost, TFs$matched[,colnames(TFs$lost)])
+results <- TFs$matched
 table(duplicated(results$Ensembl))
 results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
@@ -159,9 +150,9 @@ usethis::use_data(AnimalTFDB_Fly_TF, overwrite = TRUE)
 根据EnsemblID、Symbol和EntrezID匹配基因名。
 
 ```{r}
-TF <- read.delim("../inst/extdata/AnimalTFDB3/Drosophila_melanogaster/Drosophila_melanogaster_TF_cofactors.txt.gz",stringsAsFactors = FALSE)
+TF <- read.delim("../inst/extdata/AnimalTFDBv4/Drosophila_melanogaster/Drosophila_melanogaster_Cof.txt",stringsAsFactors = FALSE)
 head(TF)
-TF <- TF[,c("Ensembl", "Entrez.ID", "Symbol" , "Family")]
+TF <- TF[,c("Ensembl", "Entrez_ID", "Symbol" , "Family")]
 ```
 
 根据EnsemblID、Symbol和EntrezID匹配基因名。
@@ -171,7 +162,7 @@ TFs <- mapping_update(inputDF = TF,
                db = gtf, 
                by.input = "Ensembl", by.db = "Ensembl", 
                by.input.2 = "Symbol", by.db.2 = "Symbol",
-               by.input.3 = "Entrez.ID", by.db.3 = "EntrezID")
+               by.input.3 = "Entrez_ID", by.db.3 = "EntrezID")
 TFs$lost # 未匹配上的基因，经查，无法对应上。
 ```
 

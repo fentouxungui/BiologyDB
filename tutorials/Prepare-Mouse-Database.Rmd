@@ -1,7 +1,7 @@
 ---
-title: "Mouse"
+title: "Mouse Data Preparation"
 author: "Zhang Yongchao"
-date: "2022-08-30"
+date: "2025-04-15"
 output: html_document
 ---
 
@@ -11,7 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 > Attention: 可以使用在线工具https://www.informatics.jax.org/batch进行小鼠基因名（支持混合类型）的更新和转换！
 另外，发现很多MGI id不存在对应的Ensembl ID。
-
 
 ```{r}
 library(devtools)
@@ -39,7 +38,7 @@ url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/latest_release/
 **预处理**
  
 ```{r}
-gtf <- as.data.frame(rtracklayer::import("../inst/extdata/GENCODE/gencode.vM34.annotation.gtf.gz"))
+gtf <- as.data.frame(rtracklayer::import("../inst/extdata/GENCODE/gencode.vM36.annotation.gtf.gz"))
 table(gtf$type)
 gtf <- gtf[gtf$type %in% "gene",c("gene_id", "gene_name", "mgi_id", "gene_type", "seqnames", "start", "end", "width", "strand" )]
 head(gtf)
@@ -78,7 +77,6 @@ gtf <- gtf[,c("Ensembl", "Symbol", "MGI", "Gene.Type","EntrezID", "Name","Alias"
 ```{r}
 GENCODE_Mouse_Genes <- gtf
 usethis::use_data(GENCODE_Mouse_Genes, overwrite = TRUE)
-# save(gtf, file = "../data/GencodeMouseGenes.rda")
 ```
 
 
@@ -89,23 +87,23 @@ load("../data/GENCODE_Mouse_Genes.rda")
 ```
 
 
-## Animal TF DB 3.0
+## Animal TF DB v4.0
 
-url: http://bioinfo.life.hust.edu.cn/AnimalTFDB/
+url: https://guolab.wchscu.cn/AnimalTFDB4/#/
 
 
 **下载数据**
 
-手动下载链接： http://bioinfo.life.hust.edu.cn/HumanTFDB/#!/download
+手动下载链接： https://guolab.wchscu.cn/AnimalTFDB4/#/Download
 
 右键 - 链接另存为
 
 **TFs**
 
 ```{r}
-TF <- read.delim("../inst/extdata/AnimalTFDB3/Mus_musculus/Mus_musculus_TF.txt.gz",stringsAsFactors = FALSE)
+TF <- read.delim("../inst/extdata/AnimalTFDBv4/Mus_musculus/Mus_musculus_TF.txt",stringsAsFactors = FALSE)
 head(TF)
-TF <- TF[,c("Ensembl", "Entrez.ID", "Symbol" , "Family")]
+TF <- TF[,c("Ensembl", "Entrez_ID", "Symbol" , "Family")]
 ```
 
 根据EnsemblID、Symbol和EntrezID匹配基因名。
@@ -118,7 +116,7 @@ TFs <- mapping_update(inputDF = TF,
                db = gtf, 
                by.input = "Ensembl", by.db = "Ensembl", 
                by.input.2 = "Symbol", by.db.2 = "Symbol",
-               by.input.3 = "Entrez.ID", by.db.3 = "EntrezID")
+               by.input.3 = "Entrez_ID", by.db.3 = "EntrezID")
 TFs$lost # 有20未匹配上的基因，经查，无法对应上。可能是ensembl新版的删除这些条目。
 ```
 
@@ -129,11 +127,9 @@ table(results$label)
 results$label <- NULL
 results$Symbol <- gtf$Symbol[match(results$Ensembl, gtf$Ensembl)]
 results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
-# colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family")
 
 AnimalTFDB_Mouse_TF <- results
 usethis::use_data(AnimalTFDB_Mouse_TF, overwrite = TRUE)
-# saveRDS(results, "../data/AnimalTFDB_Mouse_TF.rds")
 ```
 
 **TF cofactor**
@@ -141,9 +137,9 @@ usethis::use_data(AnimalTFDB_Mouse_TF, overwrite = TRUE)
 根据EnsemblID、Symbol和EntrezID匹配基因名。
 
 ```{r}
-TF <- read.delim("../inst/extdata/AnimalTFDB3/Mus_musculus/Mus_musculus_TF_cofactors.txt.gz",stringsAsFactors = FALSE)
+TF <- read.delim("../inst/extdata/AnimalTFDBv4/Mus_musculus/Mus_musculus_Cof.txt",stringsAsFactors = FALSE)
 head(TF)
-TF <- TF[,c("Ensembl", "Entrez.ID", "Symbol" , "Family")]
+TF <- TF[,c("Ensembl", "Entrez_ID", "Symbol" , "Family")]
 ```
 
 根据EnsemblID、Symbol和EntrezID匹配基因名。
@@ -153,7 +149,7 @@ TFs <- mapping_update(inputDF = TF,
                db = gtf, 
                by.input = "Ensembl", by.db = "Ensembl", 
                by.input.2 = "Symbol", by.db.2 = "Symbol",
-               by.input.3 = "Entrez.ID", by.db.3 = "EntrezID")
+               by.input.3 = "Entrez_ID", by.db.3 = "EntrezID")
 TFs$lost # 未匹配上的基因，经查，无法对应上。
 ```
 
@@ -168,7 +164,6 @@ results$Entrez <- gtf$EntrezID[match(results$Ensembl, gtf$Ensembl)]
 
 AnimalTFDB_Mouse_TFCofactors <- results
 usethis::use_data(AnimalTFDB_Mouse_TFCofactors, overwrite = TRUE)
-# saveRDS(results, "../data/AnimalTFDB_Mouse_TFCofactors.rds")
 ```
 
 ## The IUPHAR/BPS Guide to PHARMACOLOGY
@@ -198,7 +193,7 @@ Download a file mapping Guide to PHARMACOLOGY target IDs and URLs to UniProt acc
 **target.and.family 中有哪些targets**
 
 ```{r}
-target.and.family <- read.csv("../inst/extdata/GuideToPharmacology/targets_and_families.csv.gz", stringsAsFactors = FALSE, skip = 1)
+target.and.family <- read.csv("../inst/extdata/GuideToPharmacology/targets_and_families.csv", stringsAsFactors = FALSE, skip = 1)
 table(target.and.family$Type)
 target.and.family_targets <- target.and.family[,c("Type","Family.name", "Target.id","MGI.id","MGI.symbol","Mouse.Entrez.Gene", "Mouse.Ensembl.Gene")]
 target.and.family_targets$MGI.id <- gsub("^MGI:","", target.and.family_targets$MGI.id)
@@ -210,15 +205,17 @@ target.and.family_targets$Mouse.Ensembl.Gene[is.na(target.and.family_targets$Mou
 
 janitor::get_dupes(target.and.family_targets, Target.id) # 重复的Target ID，对应多个不同的family name，即ID重复的，Family.name是不一样的，别的都一样
 
-# 第一步合并相同ID的Family.name
+# 第一步合并相同Target.id的Family.name
 target.and.family_targets %>%
   dplyr::group_by(Target.id) %>%
   mutate(Family.name = paste0(unique(Family.name), collapse = ";"))  %>% # 修改Family.name列
   filter(row_number() == 1) %>%  # 仅保留第一行
   ungroup() -> target.and.family_targets
 
-# 去除HGNC.id，HGNC.symbol，Human.Entrez.Gene，Human.Ensembl.Gene均为空的条目
+# 去除id，symbol，Entrez.Gene，Ensembl.Gene均为空的条目
 target.and.family_targets <-  dplyr::filter(target.and.family_targets, trimws(MGI.id) != "" | trimws(MGI.symbol) != "" | trimws(Mouse.Entrez.Gene) != "" | trimws(Mouse.Ensembl.Gene) != "")
+
+
 # MGI.id 有没有重复的？
 table(is.na(target.and.family_targets$MGI.id))
 table(target.and.family_targets$MGI.id %in% gtf$MGI)
@@ -228,40 +225,45 @@ table(target.and.family_targets$Mouse.Ensembl.Gene %in% gtf$Ensembl)
 
 # 目测用MGI ID匹配是最好的！
 # 发现有些Ensembl ID重复项的MGI id并不同，经查，认定是 Ensembl ID 标记有错误。并且发现列表中有些基因罗列了多个Ensembl ID，因此考虑放弃使用Ensembl ID。**考虑使用MGI ID 和 Symbol做合并**！
-target.and.family_targets.lost <- target.and.family_targets[!target.and.family_targets$MGI.id %in% gtf$MGI,]
-target.and.family_targets.lost
-#write.csv(target.and.family_targets.lost, file = "target.and.family_targets.lost-Modified.csv",row.names = FALSE) # 手动编辑，把多个ID在一起的分开。
-target.and.family_targets.lost <- read.csv("target.and.family_targets.lost-Modified.csv",stringsAsFactors = FALSE)
-target.and.family_targets.lost[is.na(target.and.family_targets.lost)] <- ""
 
-target.and.family_targets <- rbind(target.and.family_targets[target.and.family_targets$MGI.id %in% gtf$MGI,], target.and.family_targets.lost)
 target.and.family_targets.lost <- target.and.family_targets[!target.and.family_targets$MGI.id %in% gtf$MGI,]
 target.and.family_targets.lost
 
-target.and.family_targets.lost$MGI.id[target.and.family_targets.lost$MGI.id == "1915502"] <- "95700"
-# 2 transporter   SLC9 family of sodium/hydrogen exchangers       958 3646894 Slc9a11    NA : 对应不上！Slc9a1这个是在收录的。
-target.and.family_targets.lost$MGI.id[target.and.family_targets.lost$MGI.id == "96449"] <- "2685746"
-target.and.family_targets.lost$MGI.id[target.and.family_targets.lost$Mouse.Entrez.Gene == "28250"] <- "1351896"
-# mgi:"28253" 找不到对应的基因
-target.and.family_targets.lost <- target.and.family_targets.lost[-c(2,4),]
+# insert MGI id for empty values by Entrez ID
+target.and.family_targets$MGI.id[target.and.family_targets$MGI.id == ""] <- gtf$MGI[match(target.and.family_targets$Mouse.Entrez.Gene[target.and.family_targets$MGI.id == ""], gtf$EntrezID)]
+# expand the dataframe for some MGI id has multiple IDs sepearted by |
+target.and.family_targets <- Expand_df(target.and.family_targets, id = 'MGI.id', splitby = "[|]")
+target.and.family_targets$MGI.id <- gsub("^MGI:", "", target.and.family_targets$MGI.id)
 
-targets.gene.unique <- rbind(target.and.family_targets[target.and.family_targets$MGI.id %in% gtf$MGI,], target.and.family_targets.lost)
+table(target.and.family_targets$MGI.id %in% gtf$MGI)
+
+target.and.family_targets.lost <-  target.and.family_targets[!target.and.family_targets$MGI.id %in% gtf$MGI,]
+target.and.family_targets.lost$MGI.symbol %in% gtf$Symbol
+target.and.family_targets.lost$Mouse.Entrez.Gene %in% gtf$EntrezID
+target.and.family_targets$MGI.id[(!target.and.family_targets$MGI.id %in% gtf$MGI) & (target.and.family_targets$Mouse.Entrez.Gene %in% gtf$EntrezID)] <- gtf$MGI[match(target.and.family_targets$Mouse.Entrez.Gene[(!target.and.family_targets$MGI.id %in% gtf$MGI) & (target.and.family_targets$Mouse.Entrez.Gene %in% gtf$EntrezID)], gtf$EntrezID)]
+
+
+targets.gene.unique <- target.and.family_targets[target.and.family_targets$MGI.id %in% gtf$MGI,]
 all(targets.gene.unique$MGI.id %in% gtf$MGI)
 table(duplicated(targets.gene.unique$MGI.id))
 
 
 # 重复的MGI ID
-targets.gene.unique[targets.gene.unique$MGI.id %in% targets.gene.unique$MGI.id[duplicated(targets.gene.unique$MGI.id)],] #没有重复的，good
-# 丢弃Target.id 3129这个条目
-janitor::get_dupes(targets.gene.unique, Target.id) # 重复的Target ID，对应多个不同的family name，即ID重复的，Family.name是不一样的，别的都一样
+janitor::get_dupes(targets.gene.unique, MGI.id) # remove the second
+targets.gene.unique <- targets.gene.unique[!duplicated(targets.gene.unique$MGI.id),]
 
-# 最终得到的target，有一个id对应多个MGI id
+# 重复的target ID
+janitor::get_dupes(targets.gene.unique, Target.id) # 重复的Target ID，对应多个不同的family name，即ID重复的，Family.name是不一样的，别的都一样
+# 最终得到的target，有一个target id 可能对应多个MGI id
+
 # gtf里的MGI id有重复值
 gtf.Duplicated.MGI <- as.vector(na.omit(gtf$MGI[duplicated(gtf$MGI)]))
 map.unique <- targets.gene.unique[!targets.gene.unique$MGI.id %in% gtf.Duplicated.MGI,]
 map.duplicates <- targets.gene.unique[targets.gene.unique$MGI.id %in% gtf.Duplicated.MGI,]
+
 gtf[gtf$MGI == "2442042" & !is.na(gtf$MGI),] # 1个MGI id对应两个Ensembl ID
 targets.gene.unique[targets.gene.unique$MGI.id == "2442042",]
+
 targets.gene.unique$MGI.symbol <- gtf$Symbol[match(targets.gene.unique$MGI.id, gtf$MGI)]
 targets.gene.unique$Mouse.Entrez.Gene <- gtf$EntrezID[match(targets.gene.unique$MGI.id, gtf$MGI)]
 targets.gene.unique$Mouse.Ensembl.Gene <- gtf$Ensembl[match(targets.gene.unique$MGI.id, gtf$MGI)]
@@ -278,7 +280,6 @@ colnames(targets.gene.unique) <- c("Ensembl","MGI", "Symbol", "Entrez", "Target.
 
 Mouse_GuideToPHARMACOLOGY_Targets <- targets.gene.unique
 usethis::use_data(Mouse_GuideToPHARMACOLOGY_Targets, overwrite = TRUE)
-# saveRDS(targets.gene.unique,file = "../data/Mouse_GuideToPHARMACOLOGY_Targets.rds")
 ```
 
 ```{r}
@@ -293,13 +294,13 @@ janitor::get_dupes(targets.gene.unique, Target.ID)
 ligand.ID.mapping 与 ligand 两个文档内容是一致的； 注意：一个ligand ID可以对应多个基因; 一个基因ID也可以对应多个Ligand ID。
 
 ```{r}
-ligand <- read.csv("../inst/extdata/GuideToPharmacology/ligands.csv.gz", stringsAsFactors = FALSE, skip = 1)
-ligand.ID.mapping <- read.csv("../inst/extdata/GuideToPharmacology/ligand_id_mapping.csv.gz", stringsAsFactors = FALSE, skip = 1)
+ligand <- read.csv("../inst/extdata/GuideToPharmacology/ligands.csv", stringsAsFactors = FALSE, skip = 1)
+ligand.ID.mapping <- read.csv("../inst/extdata/GuideToPharmacology/ligand_id_mapping.csv", stringsAsFactors = FALSE, skip = 1)
 
 all(ligand.ID.mapping$Ensembl.ID == ligand$Ensembl.ID)
 # ligand.ID.mapping 与ligand 里的Ensembl.ID是一样的，并且维度也一样。
 
-# 提取所有人里的Ligands基因。
+# 提取所有鼠里的Ligands基因。
 table(ligand.ID.mapping$Type)
 table(duplicated(ligand.ID.mapping$Ligand.id)) # Liand id是没有重复值的！
 
@@ -321,6 +322,7 @@ ligands.id.uniqe$Ensembl.ID <- tmp
 ## 制备old - new name数据库
 ensembl.ids.unique <- unique(unlist(lapply(ligands.id.uniqe$Ensembl.ID, function(x)unlist(strsplit(x, split = ";",fixed = TRUE))))) # 提取所有IDs
 ensembl.ids.unique.lost <- ensembl.ids.unique[!ensembl.ids.unique %in% gtf$Ensembl] # 提取不能被识别的
+
 ligands.id.uniqe[ligands.id.uniqe$Ensembl.ID %in% ensembl.ids.unique.lost,]
 ligands.id.uniqe[grepl("ENSMUSG00000055951", ligands.id.uniqe$Ensembl.ID),]
 # corticotrophin-releasing hormone Human对应的 ENSMUSG0000004979 应该改为ENSMUSG00000049796
@@ -346,8 +348,7 @@ ligands.gene.uniqe$Name <- NULL
 colnames(ligands.gene.uniqe) <- c("Ensembl","Symbol", "Ligand.ID","Type")
 
 Mouse_GuideToPHARMACOLOGY_LigandsPeptides <- ligands.gene.uniqe
-usethis::use_data(Mouse_GuideToPHARMACOLOGY_LigandsPeptides, overwrite = TRUE)
-# saveRDS(ligands.gene.uniqe, file = "../data/Mouse_GuideToPHARMACOLOGY_LigandsPeptides.rds")
+usethis::use_data
 ```
 
 
@@ -408,8 +409,8 @@ usethis::use_data(Mouse_GuideToPHARMACOLOGY_LigandsPeptides, overwrite = TRUE)
 target_ligand：注意，这个表示这个target本来也是一个ligand，但是在这个条目中，他是一个target。
 
 ```{r}
-all.ligands.and.targets.interactions <- read.csv("../inst/extdata/GuideToPharmacology/interactions.csv.gz", stringsAsFactors = FALSE, skip = 1)
-complete.peptide.ligand <-  read.csv("../inst/extdata/GuideToPharmacology/peptides.csv.gz", stringsAsFactors = FALSE, skip = 1)
+all.ligands.and.targets.interactions <- read.csv("../inst/extdata/GuideToPharmacology/interactions.csv", stringsAsFactors = FALSE, skip = 1)
+complete.peptide.ligand <-  read.csv("../inst/extdata/GuideToPharmacology/peptides.csv", stringsAsFactors = FALSE, skip = 1)
 # 只保留鼠的
 all.interactions.targets <- all.ligands.and.targets.interactions[all.ligands.and.targets.interactions$Target.Species == "Mouse",]
 # 配体与配体的互作？这里不再进行深入探索，以后再说吧！  Target.Ligand 开头的列是啥？
@@ -552,7 +553,6 @@ interactions <- interactions[,c("LT_Pair_ID","Target.ID","Target","Target.Ensemb
 table(duplicated(interactions$Target.ID))
 Mouse_GuideToPHARMACOLOGY_Interactions_LigandTargetsFull <- interactions
 usethis::use_data(Mouse_GuideToPHARMACOLOGY_Interactions_LigandTargetsFull, overwrite = TRUE)
-# save(interactions, file = "../data/Mouse_GuideToPHARMACOLOGY_Interactions-Ligand-Targets-Full.rda", compress = "xz")
 ```
 注意，Mouse_GuideToPHARMACOLOGY_Interactions-Ligand-Targets-Full.rda收录的Ligand和Targets要多于Mouse_GuideToPHARMACOLOGY_LigandsPeptides和Mouse_GuideToPHARMACOLOGY_Targets的！
 
@@ -583,7 +583,6 @@ head(sort(table(interactions.gene$Ligand.Symbol),decreasing = TRUE),30)
 ```{r}
 Mouse_GuideToPHARMACOLOGY_Interactions_LigandTargetsFull_Expanded <- interactions.gene
 usethis::use_data(Mouse_GuideToPHARMACOLOGY_Interactions_LigandTargetsFull_Expanded, overwrite = TRUE)
-# save(interactions.gene, file = "../data/Mouse_GuideToPHARMACOLOGY_Interactions-Ligand-Targets-Full-Expanded.rda", compress = "xz")
 ```
 
 ```{r}
@@ -677,7 +676,6 @@ targets.full.gene.unique$MGI <- gtf$Symbol[match(targets.full.gene.unique$Ensemb
 ```{r}
 Mouse_GuideToPHARMACOLOGY_Interactions_OnlyTargetsFull_Expanded <- targets.full.gene.unique
 usethis::use_data(Mouse_GuideToPHARMACOLOGY_Interactions_OnlyTargetsFull_Expanded, overwrite = TRUE)
-# saveRDS(targets.full.gene.unique,file = "../data/Mouse_GuideToPHARMACOLOGY_Interactions-Only-Targets-Full-Expanded.rda")
 ```
 
 带full，表示收录的基因数目会更多一些！
@@ -710,13 +708,14 @@ protein.mouse$Symbol.Added <- gtf$Symbol[match(protein.mouse$Protein, gtf$UniPro
 
 UniProt_ProteinFamily_Mouse <- protein.mouse
 usethis::use_data(UniProt_ProteinFamily_Mouse, overwrite = TRUE)
-# saveRDS(protein.mouse, file =  "../data/UniProt_ProteinFamily-Mouse.rds")
 ```
 
 
 ## VerSeDa: vertebrate secretome database
 
 预测的结果，很多应该都是不靠谱的！
+
+2025.04.16 跳过了这部分！
 
 http://genomics.cicbiogune.es/VerSeDa/FullOrganisms.php
 
@@ -752,106 +751,74 @@ gene.con <- gene.con[,c("Ensembl", "Uniprot","SignalP","TargetP","TMHMM","PredGP
 
 VerSeDa_Mouse_SecretomePrediction <- gene.con
 usethis::use_data(VerSeDa_Mouse_SecretomePrediction, overwrite = TRUE)
-# saveRDS(gene.con, file = "../data/VerSeDa_Mouse_secretome-prediction.rds")
 ```
 
 
-## CellChat
+## CellChat V2
 
 github: https://github.com/jinworks/CellChat
 
 url: https://github.com/jinworks/CellChat/tree/main/data
 
 ```{r}
-load("../inst/extdata/CellChat/CellChatDB.mouse.rda")
+load("../inst/extdata/CellChatV2/CellChatDB.mouse.rda")
 interactions <- CellChatDB.mouse$interaction
 rownames(interactions) <- NULL
-interactions$ligand <-  trimws(gsub(" ","",unlist(lapply(strsplit(interactions$interaction_name_2,split = " - "),"[",1))))
-interactions$receptor <- unlist(lapply(strsplit(interactions$interaction_name_2,split = " - "),"[",2))
-interactions$receptor <- gsub("\\+",";",gsub("\\)$","", gsub("^\\(","",gsub(" ","",interactions$receptor))))
+```
 
-receptors <- unique(trimws(unlist(strsplit(interactions$receptor, split = ";"))))
-table(receptors %in% gtf$Symbol)
-receptors[!receptors %in% gtf$Symbol]
-
-receptors.mapping <- c(Vegfr1 = "Flt1",
-                       Vegfr2 = "Kdr",
-                       Vegfr3 = "Flt4",
-                       Inssr = "Insr",
-                       #Vegfr1r2 没找到，
-                       Il4r = "Il4ra",
-                       Il6r = "Il6ra",
-                       Cd45 = "Ptprc",
-                       Gpr1 = "Cmklr2",
-                       #Gpcomplex not found，
-                       Lxa4 = "Fpr3",
-                       Cd99 = "Cd99l2" # 可能是~
-                       # Klra = "Klra" # 是一个cluster， grep("Klra", gtf$Symbol,value = TRUE)
-                       )
-interactions <- interactions[!grepl("(Vegfr1r2)|(Gpcomplex)|(Klra)|(Vegfr2r3)",interactions$receptor),] # 去除这三个基因所在的行
-symbol.db <- data.frame(old = receptors, new = receptors, row.names = receptors)
-symbol.db$new[match(names(receptors.mapping), symbol.db$old)] <- unname(receptors.mapping)
-interactions$receptor <- update_IDs(old = interactions$receptor, db = symbol.db, from = "old", to = "new", split = ";")
-
-ligands <- unique(trimws(unlist(strsplit(interactions$ligand, split = ";"))))
+```{r}
+# first remove rows in interactions which the ligands symbol not existed in gtf
+ligands <- unique(trimws(unlist(strsplit(interactions$ligand.symbol, split = ", "))))
 table(ligands %in% gtf$Symbol)
-ligands[!ligands %in% gtf$Symbol]
-
-ligands.mapping <- c(Inhbabb = "Inhba",
-                     # Inhb not found,
-                     # Inhaba not found,
-                     # Inhabb,
-                     Ccl21c = "Gm13304", # 参考 Uniprot
-                     Cxcl4 = "Pf4",
-                     Il1f5 = "Il36rn",
-                     Il1f6 = "Il36a",
-                     Il1f8 = "Il36b",
-                     Il1f9 = "Il36g",
-                     # Il17af = ""
-                     Gh1 = "Gh",
-                     # Ifna = ""
-                     Ngfa = "Klk1b4",
-                     Npnt1 = "Npnt",
-                     # Npnt2
-                     Cd99 = "Cd99l2", # 可能是~
-                     Jam1 = "F11r",
-                     # cat(paste0("'",lost[toupper(lost) %in% gtf$Symbol], "' = '", toupper(lost)[toupper(lost) %in% gtf$Symbol],"',"))
-                     'H2-t23' = 'H2-T23', 'H2-m2' = 'H2-M2', 'H2-m3' = 'H2-M3', 'H2-m9' = 'H2-M9', 'H2-q1' = 'H2-Q1', 
-                     'H2-q10' = 'H2-Q10', 'H2-q2' = 'H2-Q2', 'H2-q7' = 'H2-Q7', 'H2-t22' = 'H2-T22', 'H2-t24' = 'H2-T24', 
-                     'H2-t3' = 'H2-T3', 'H2-m10.4' = 'H2-M10.4', 'H2-m11' = 'H2-M11', 'H2-m1' = 'H2-M1', 'H2-m10.5' = 'H2-M10.5', 
-                     'H2-m10.2' = 'H2-M10.2', 'H2-m10.6' = 'H2-M10.6', 'H2-t10' = 'H2-T10', 'H2-q6' = 'H2-Q6', 'H2-m10.3' = 'H2-M10.3', 
-                     'H2-d1' = 'H2-D1', 'H2-k1' = 'H2-K1', 'H2-m10.1' = 'H2-M10.1', 'H2-q4' = 'H2-Q4', 'H2-m5' = 'H2-M5',
-                     # H2-q8 = ""
-                     'H2-t9' = "Gm7030",
-                     # H2-l = ""
-                     'H2-t-ps' = "H2-T-ps",
-                     # H2-bi 
-                     # Raet1a
-                     # H60a = ""
-                     'H2-ea-ps' = "H2-Ea",
-                     'H2-aa' = "H2-Aa",
-                     'H2-ab1' = "H2-Ab1",
-                     'H2-eb1' = "H2-Eb1",
-                     'H2-dma' = "H2-DMa",
-                     'H2-dmb1' = "H2-DMb1",
-                     'H2-dmb2' = "H2-DMb2",
-                     'H2-oa' = "H2-Oa",
-                     'H2-ob' = "H2-Ob"
+ligands.lost <- ligands[!ligands %in% gtf$Symbol]
+# list choose ligands.symbol which not existed in gtf$symbol
+interactions$ligand.symbol[unlist(lapply(strsplit(interactions$ligand.symbol, split = ", "), function(x)any(x %in% ligands.lost)))]
+ligands.mapping <- c(Cd99 = "Cd99l2", # 可能是~ 
+                     # Ccl21 unknown
+                     # H2-Q8
+                     "H2-Bl" = "H2-T13",
+                     # H2-T18
+                     # H2-Q9
+                     "H2-T26" = "H2-T5",
+                     # H2-L
+                     Gm10499 = "H2-T7",
+                     "H2-T-ps"= "H2-T11-ps",
+                     "H2-T27" = "H2-T15",
+                     "H2-T25" = "H2-T9"
+                     # H2-D
+                     # "Raet1a"
+                     # "H60a"
+                     # Raet1c
+                     # "Raet1b"
                      )
+ligands.mapping <- ligands.mapping[unname(ligands.mapping) %in% gtf$Symbol]
+for (i in names(ligands.mapping)) {
+  interactions$ligand.symbol[interactions$ligand.symbol == i] <- ligands.mapping[i]
+}
+interactions <- interactions[unlist(lapply(strsplit(interactions$ligand.symbol, split = ", "), function(x)all(x %in% gtf$Symbol))),]
 
-interactions <- interactions[!interactions$ligand %in% c("Inhb","Inhaba","Inhabb","Il17af","Ifna","Npnt2","H2-q8","H2-l","H2-bi","Raet1a","H60a"),] # 去除这三个基因所在的行
+# seconda remove rows in interactions which the receptors symbol not existed in gtf
+interactions$receptor.symbol <- gsub("_", ", ", interactions$receptor.symbol)
+receptors <- unique(trimws(unlist(strsplit(interactions$receptor.symbol, split = ", "))))
+table(receptors %in% gtf$Symbol)
+receptors.lost <- receptors[!receptors %in% gtf$Symbol]
+interactions$receptor.symbol[unlist(lapply(strsplit(interactions$receptor.symbol, split = ", "), function(x)any(x %in% receptors.lost)))]
 
-symbol.db <- data.frame(old = ligands, new = ligands, row.names = ligands)
-symbol.db$new[match(names(ligands.mapping), symbol.db$old)] <- unname(ligands.mapping)
-interactions$ligand <- update_IDs(old = interactions$ligand, db = symbol.db, from = "old", to = "new", split = ";")
+receptors.mapping <- c(Cd99 = "Cd99l2") # 可能是~ 
+receptors.mapping <- receptors.mapping[unname(receptors.mapping) %in% gtf$Symbol]
+for (i in names(receptors.mapping)) {
+  interactions$receptor.symbol[interactions$receptor.symbol == i] <- receptors.mapping[i]
+}
+interactions <- interactions[unlist(lapply(strsplit(interactions$receptor.symbol, split = ", "), function(x)all(x %in% gtf$Symbol))),]
+```
 
 
-interactions$receptor.Ensembl <- update_IDs(old = interactions$receptor, db = gtf, from = "Symbol", to = "Ensembl", split = ";", fixed = TRUE)
-interactions$ligand.Ensembl <- update_IDs(old = interactions$ligand, db = gtf, from = "Symbol", to = "Ensembl",  fixed = TRUE)
+```{r}
+interactions$receptor.Ensembl <- update_IDs(old = interactions$receptor.symbol, db = gtf, from = "Symbol", to = "Ensembl", split = ",", fixed = TRUE)
+interactions$ligand.Ensembl <- update_IDs(old = interactions$ligand.symbol, db = gtf, from = "Symbol", to = "Ensembl",  split = "_", fixed = TRUE)
 
 CellChat_Mouse_LigandReceptorsInteractions <- interactions
 usethis::use_data(CellChat_Mouse_LigandReceptorsInteractions, overwrite = TRUE)
-# saveRDS(interactions, file = "../data/CellChat_Mouse_LigandReceptors-Interactions.rds")
 ```
 
 ```{r}
@@ -884,7 +851,6 @@ receptor.sub <- Reduce(rbind, lapply(split(receptor.sub, f = receptor.sub$recept
 
 CellChat_Mouse_Receptors <- receptor.sub
 usethis::use_data(CellChat_Mouse_Receptors, overwrite = TRUE)
-# saveRDS(receptor.sub, file = "../data/CellChat_Mouse_Receptors.rds")
 
 
 ligand.sub <- lrs[,c(1,3,4)]
@@ -913,7 +879,6 @@ ligand.sub <- Reduce(rbind, lapply(split(ligand.sub, f = ligand.sub$ligand.Ensem
 
 CellChat_Mouse_Ligands <- ligand.sub
 usethis::use_data(CellChat_Mouse_Ligands, overwrite = TRUE)
-# saveRDS(ligand.sub, file = "../data/CellChat_Mouse_Ligands.rds")
 ```
 
 
@@ -939,7 +904,6 @@ lrs$receptor_gene_id <- gtf$EntrezID[match(lrs$receptor_ensembl_gene_id, gtf$Ens
 
 CellTalkDB_Mouse_Interactions <- lrs
 usethis::use_data(CellTalkDB_Mouse_Interactions, overwrite = TRUE)
-# saveRDS(lrs, file = "../data/CellTalkDB_Mouse_Interactions.rds")
 ```
 
 ## NCBI: Gene summary
@@ -952,18 +916,21 @@ usethis::use_data(CellTalkDB_Mouse_Interactions, overwrite = TRUE)
 
 参考：[9.10 Parsing huge Entrez XML files](https://biopython-cn.readthedocs.io/zh-cn/latest/en/chr09.html)
 
-install ncbi-tools-bin, and trans ags to xml file:
+**install ncbi-tools-bin, and trans ags to xml file:**
 
-``sudo apt-get install ncbi-tools-bin``
-``gunzip Mus_musculus.ags.gz``
-``gene2xml -b T  -i Mus_musculus.ags -o Mus_musculus.xml``
+```{bash eval=FALSE}
+# sudo apt-get install ncbi-tools-bin
+gunzip Mus_musculus.ags.gz
+gene2xml -b T  -i Mus_musculus.ags -o Mus_musculus.xml
+```
 
 **提取基因信息**
 
-``cat Mus_musculus.xml | grep "<Gene-track_geneid>\|<Gene-ref_locus>\|<Entrezgene_summary>" > subset.txt``
-去掉行前的空格
-``sed  -i 's/^[ ]*//g' subset.txt``
-编辑subset.txt添加列名为con
+```{bash eval=FALSE}
+cat Mus_musculus.xml | grep "<Gene-track_geneid>\|<Gene-ref_locus>\|<Entrezgene_summary>" > subset.txt
+# 去掉行前的空格
+sed  -i 's/^[ ]*//g' subset.txt
+```
 
 然后使用R语言提取基因信息，具体流程请见："inst/extdata/NCBI/Human_Gene_Summary/extract-gene-summary.md"文件。
 
@@ -991,7 +958,7 @@ usethis::use_data(NCBI_Mouse_GeneSummary, overwrite = TRUE)
 下载蛋白的注释信息，具体参考："inst/extdata/UniProt/GeneFunction/Human/提取-UniProt-Protein-summary.md"
 
 ```{r}
-uniprot <- read.delim("../inst/extdata/UniProt/GeneFunction/Mouse/uniprotkb_AND_model_organism_10090_2023_08_21.tsv",stringsAsFactors = FALSE)
+uniprot <- read.delim("../inst/extdata/UniProt/GeneFunction/Mouse/uniprotkb_mouse_AND_reviewed_true_AND_m_2025_04_16.tsv.gz",stringsAsFactors = FALSE)
 uniprot <- uniprot[uniprot$Reviewed == "reviewed",]
 uniprot <- uniprot[uniprot$Function..CC. != "",]
 uniprot <- uniprot[uniprot$Gene.Names..primary. != "",]

@@ -93,7 +93,7 @@ for record in res_parse:
         continue
     else:
         gene_name = record['Entrezgene_gene']['Gene-ref']['Gene-ref_locus']
-    # 有的没有Entrezgene_summary
+    # 有的没有Entrez gene_summary
     if 'Entrezgene_summary' in record.keys():
         gene_summary = record['Entrezgene_summary']
     else:

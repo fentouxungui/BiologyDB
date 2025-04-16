@@ -17,7 +17,7 @@
 # }
 # close(con)
 
-df <- read.delim("./subset.txt",stringsAsFactors = FALSE)
+df <- read.delim("./subset.txt",stringsAsFactors = FALSE,col.names = "con")
 con <- gsub("^\\s+","",df$con)
 A <- which(grepl("^<Gene-track_geneid>",con))
 B <- which(grepl("^<Gene-ref_locus>",con))
@@ -67,8 +67,9 @@ results <- results[results$summary != "",]
 dim(results)
 results <- results[!grepl("DISCONTINUED", results$summary),]
 dim(results)
-# saveRDS(results,file ="NCBI_gene_summary_from_ASN_filtered.rds" )
-# write.table(results,file = "NCBI_gene_summary_from_ASN_filtered.txt",row.names = FALSE,quote = FALSE,sep = "\t")
+
+# download: https://www.ncbi.nlm.nih.gov/sites/books/NBK3840/
+# https://ftp.ncbi.nih.gov/gene/DATA/GENE_INFO/Mammalia/Mus_musculus.gene_info.gz
 
 df <- read.delim("./Mus_musculus.gene_info.gz",stringsAsFactors = FALSE)
 table(duplicated(df$GeneID))

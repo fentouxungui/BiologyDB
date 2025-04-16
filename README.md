@@ -5,8 +5,9 @@
 
 <!-- badges: start -->
 
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![](https://img.shields.io/badge/devel%20version-0.0.1-rossellhayes.svg)](https://github.com/fentouxungui/SeuratExplorer)
+[![](https://img.shields.io/github/languages/code-size/fentouxungui/SeuratExplorer.svg)](https://github.com/fentouxungui/SeuratExplorer)
 <!-- badges: end -->
 
 > 为什么做这件事？
@@ -38,18 +39,18 @@ install_github("fentouxungui/BiologyDBLight")
 - 人的话，用HGNC提供的在线工具[Multi-symbol
   checker](https://www.genenames.org/tools/multi-symbol-checker/)进行更新，然后用[ZhangRtools](https://github.com/fentouxungui/ZhangRtools)包里的
   **Check_hgnc_hits** 对匹配结果预处理。gtf version: [Gencode
-  v45](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/latest_release/)
+  v47](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/latest_release/)
 
 - 小鼠的话，用MGI提供的在线工具[MGI Batch
   Query](https://www.informatics.jax.org/batch)进行基因ID更新。gtf
   version: [Gencode
-  vM34](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/latest_release/)
+  vM36](https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/latest_release/)
 
 - 果蝇的话，用Flybase提供的在线工具[Batch
   Download](https://flybase.org/batchdownload)或[ID
   Validator](https://flybase.org/convert/id)进行ID更新。gtf version:
   [flybase
-  r6.56](https://ftp.flybase.org/genomes/dmel/dmel_r6.56_FB2024_01/)
+  r6.62](https://flybase-ftp.s3.us-east-1.amazonaws.com/genomes/Drosophila_melanogaster/dmel_r6.62_FB2025_01/gtf/dmel-all-r6.62.gtf.gz)
 
 ## 数据
 
@@ -131,7 +132,7 @@ d$results[,"Item"]
 
 ``` r
 sessionInfo()
-#> R version 4.4.1 (2024-06-14 ucrt)
+#> R version 4.4.3 (2025-02-28 ucrt)
 #> Platform: x86_64-w64-mingw32/x64
 #> Running under: Windows 11 x64 (build 22631)
 #> 
@@ -152,11 +153,21 @@ sessionInfo()
 #> [1] stats     graphics  grDevices utils     datasets  methods   base     
 #> 
 #> other attached packages:
-#> [1] BiologyDB_0.0.0.9000
+#> [1] BiologyDB_0.0.0.9000 badger_0.2.4        
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] compiler_4.4.1    fastmap_1.2.0     cli_3.6.3         tools_4.4.1      
-#>  [5] htmltools_0.5.8.1 rstudioapi_0.16.0 yaml_2.3.8        rmarkdown_2.27   
-#>  [9] knitr_1.47        xfun_0.45         digest_0.6.36     rlang_1.1.4      
-#> [13] evaluate_0.24.0
+#>  [1] gtable_0.3.5        jsonlite_1.8.8      dplyr_1.1.4        
+#>  [4] compiler_4.4.3      BiocManager_1.30.23 tidyselect_1.2.1   
+#>  [7] rvcheck_0.2.1       scales_1.3.0        yaml_2.3.8         
+#> [10] fastmap_1.2.0       ggplot2_3.5.1       R6_2.5.1           
+#> [13] generics_0.1.3      knitr_1.47          yulab.utils_0.1.4  
+#> [16] tibble_3.2.1        desc_1.4.3          dlstats_0.1.7      
+#> [19] munsell_0.5.1       pillar_1.9.0        RColorBrewer_1.1-3 
+#> [22] rlang_1.1.4         utf8_1.2.4          cachem_1.1.0       
+#> [25] xfun_0.45           fs_1.6.4            memoise_2.0.1      
+#> [28] cli_3.6.3           magrittr_2.0.3      digest_0.6.36      
+#> [31] grid_4.4.3          rstudioapi_0.16.0   lifecycle_1.0.4    
+#> [34] vctrs_0.6.5         evaluate_0.24.0     glue_1.7.0         
+#> [37] fansi_1.0.6         colorspace_2.1-0    rmarkdown_2.27     
+#> [40] tools_4.4.3         pkgconfig_2.0.3     htmltools_0.5.8.1
 ```

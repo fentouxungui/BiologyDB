@@ -1,10 +1,10 @@
 Package: BiologyDB
-Title: Biology Database 
-Version: 0.0.0.9000
+Title: Some Frequenctly Used Biology Database In our Lab
+Version: 0.0.1
 Authors@R: 
      person("Yongchao", "Zhang", , "zhangyongchao@nibs.ac.cn", role = c("aut", "cre"),
            comment = c(Github = "https://github.com/fentouxungui"))
-Description: Biology Database at Gene level used to annoatate genes from dataframes, supports for Human, Mouse and Drosophlia.
+Description: A gene level biology database which can be used to annoatate genes, supports species: human, mouse and drosophlia.
 License: GPL (>= 2)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

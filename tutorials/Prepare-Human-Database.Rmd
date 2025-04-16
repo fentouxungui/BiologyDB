@@ -1,7 +1,7 @@
 ---
 title: "Human"
 author: "Zhang Yongchao"
-date: "2022-08-30"
+date: "2025-04-15"
 output: html_document
 ---
 
@@ -37,7 +37,7 @@ url: https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/latest_release/
 仅保留基因水平的信息
 
 ```{r}
-gtf <- as.data.frame(rtracklayer::import("../inst/extdata/GENCODE/gencode.v45.primary_assembly.annotation.gtf.gz"))
+gtf <- as.data.frame(rtracklayer::import("../inst/extdata/GENCODE/gencode.v47.annotation.gtf.gz"))
 table(gtf$type)
 gtf <- gtf[gtf$type %in% "gene",c("gene_id", "gene_name", "hgnc_id", "gene_type", "seqnames", "start", "end", "width", "strand" )]
 head(gtf)
@@ -68,7 +68,7 @@ dplyr::arrange(gtf[gtf$Symbol %in% gtf.Duplicated.symbols,],desc(Symbol))
 
 
 ```{r}
-# Ensembl 和 Symbol 的maping，对于重复的symbol，使用第一个Ensembl ID
+# # Ensembl 和 Symbol 的maping，对于重复的symbol，使用第一个Ensembl ID
 # gtf.unique <- gtf[!duplicated(gtf$Symbol),]
 # mapping.id.symbol <- gtf.unique$Ensembl
 # names(mapping.id.symbol) <- gtf.unique$Symbol
@@ -89,7 +89,6 @@ gtf <- gtf[,c("Ensembl", "Symbol", "HGNC", "Gene.Type","EntrezID", "Name","Alias
 ```{r}
 GENCODE_Human_Genes <- gtf
 usethis::use_data(GENCODE_Human_Genes, overwrite = TRUE)
-# save(gtf, file = "../data/GencodeHumanGenes.rda")
 ```
 
 # 非核心数据库
@@ -158,28 +157,27 @@ colnames(results) <- c("Ensembl","HGNC.Symbol","Entrez","TF.DBD","Symbol","Entre
 ```{r}
 TheHumanTranscriptionFactors <- results
 usethis::use_data(TheHumanTranscriptionFactors, overwrite = TRUE)
-# saveRDS(results, "../data/TheHumanTranscriptionFactors.rds")
 ```
 
 
-## Animal TF DB 3.0
+## Animal TF DB v4.0
 
-url: http://bioinfo.life.hust.edu.cn/AnimalTFDB/
+url: https://guolab.wchscu.cn/AnimalTFDB4/#/
 
-HumanTFDB portal: http://bioinfo.life.hust.edu.cn/HumanTFDB/
+HumanTFDB portal: https://guolab.wchscu.cn/AnimalTFDB4/#/tf_summary/Homo_sapiens
 
 **下载数据**
 
-手动下载链接： http://bioinfo.life.hust.edu.cn/HumanTFDB/#!/download
+手动下载链接： https://guolab.wchscu.cn/AnimalTFDB4_static/download/TF_list_final/Homo_sapiens_TF
 
 右键 - 链接另存为
 
 **TFs**
 
 ```{r}
-TF <- read.delim("../inst/extdata/AnimalTFDB3/Homo_sapiens/Homo_sapiens_TF.txt.gz",stringsAsFactors = FALSE)
+TF <- read.delim("../inst/extdata/AnimalTFDBv4/Homo_sapiens/Homo_sapiens_TF.txt",stringsAsFactors = FALSE)
 head(TF)
-TF <- TF[,c("Ensembl", "Entrez.ID", "Symbol" , "Family")]
+TF <- TF[,c("Ensembl", "Entrez_ID", "Symbol" , "Family")]
 ```
 
 根据EnsemblID、Symbol和EntrezID匹配基因名。
@@ -189,7 +187,7 @@ TFs <- mapping_update(inputDF = TF,
                db = gtf, 
                by.input = "Ensembl", by.db = "Ensembl", 
                by.input.2 = "Symbol", by.db.2 = "Symbol",
-               by.input.3 = "Entrez.ID", by.db.3 = "EntrezID")
+               by.input.3 = "Entrez_ID", by.db.3 = "EntrezID")
 TFs$lost # 未匹配上的基因，经查，无法对应上。
 ```
 
@@ -206,7 +204,6 @@ colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family", "EntrezID")
 ```{r}
 AnimalTFDB_Human_TF <- results
 usethis::use_data(AnimalTFDB_Human_TF, overwrite = TRUE)
-# saveRDS(results, "../data/AnimalTFDB_Human_TF.rds")
 ```
 
 
@@ -215,9 +212,9 @@ usethis::use_data(AnimalTFDB_Human_TF, overwrite = TRUE)
 根据EnsemblID、Symbol和EntrezID匹配基因名。
 
 ```{r}
-TF <- read.delim("../inst/extdata/AnimalTFDB3/Homo_sapiens/Homo_sapiens_TF_cofactors.txt.gz",stringsAsFactors = FALSE)
+TF <- read.delim("../inst/extdata/AnimalTFDBv4/Homo_sapiens/Homo_sapiens_Cof.txt",stringsAsFactors = FALSE)
 head(TF)
-TF <- TF[,c("Ensembl", "Entrez.ID", "Symbol" , "Family")]
+TF <- TF[,c("Ensembl", "Entrez_ID", "Symbol" , "Family")]
 ```
 
 根据EnsemblID、Symbol和EntrezID匹配基因名。
@@ -244,7 +241,6 @@ colnames(results) <- c("Ensembl", "Entrez", "Symbol", "Family", "EntrezID")
 ```{r}
 AnimalTFDB_Human_TFCofactors <- results
 usethis::use_data(AnimalTFDB_Human_TFCofactors, overwrite = TRUE)
-# saveRDS(results, "../data/AnimalTFDB_Human_TFCofactors.rds")
 ```
 
 
@@ -261,15 +257,11 @@ display_venn(list(THTF = THTF[,1],
              fill = c("#999999", "#E69F00"))
 ```
 
-## The IUPHAR/BPS Guide to PHARMACOLOGY
+## The IUPHAR/BPS Guide to PHARMACOLOGY - Release 2025.04.01
 
 url: https://www.guidetopharmacology.org/index.jsp
 
-Current Release Version 2022.2 (9th June 2022)
-
-full datbase(dmp format, created with PostgreSQL version 9.2): https://www.guidetopharmacology.org/DATA/public_iuphardb_v2022.2.zip
-
-or Read a description of the files: "https://www.guidetopharmacology.org/DATA/file_descriptions.txt"
+Read a description of the files: "https://www.guidetopharmacology.org/DATA/file_descriptions.txt"
 
 Download complete **target and family** list: https://www.guidetopharmacology.org/DATA/targets_and_families.csv
 Download complete **ligand** list: https://www.guidetopharmacology.org/DATA/ligands.csv
@@ -293,7 +285,7 @@ gtf <- GENCODE_Human_Genes
 **target.and.family 中有哪些targets**
 
 ```{r}
-target.and.family <- read.csv("../inst/extdata/GuideToPharmacology/targets_and_families.csv.gz", stringsAsFactors = FALSE, skip = 1)
+target.and.family <- read.csv("../inst/extdata/GuideToPharmacology/targets_and_families.csv", stringsAsFactors = FALSE, skip = 1)
 table(target.and.family$Type)
 target.and.family_targets <- target.and.family[,c("Type","Family.name", "Target.id","HGNC.id","HGNC.symbol","Human.Entrez.Gene", "Human.Ensembl.Gene")]
 janitor::get_dupes(target.and.family_targets, Target.id) # 重复的Target ID，对应多个不同的family name，即ID重复的，Family.name是不一样的，别的都一样
@@ -314,7 +306,7 @@ table(target.and.family_targets$Human.Entrez.Gene %in% gtf$EntrezID)
 table(target.and.family_targets$Human.Ensembl.Gene %in% gtf$Ensembl)
 
 # 目测用HGNC ID匹配是最好的！
-# 发现有些Ensembl ID重复项的HGNC id并不同，经查，认定是 Ensembl ID 标记有错误。并且发现列表中有些基因罗列了多个Ensembl ID，因此考虑放弃使用Ensembl ID。**考虑使用HGNC ID 和 Symbol做合并**！
+# 发现有些Ensembl ID重复项的HGNC id并不同，经查，认定是 Ensembl ID 标记有错误。并且发现列表中有些基因罗列了多个Ensembl ID，因此考虑放弃使用Ensembl ID。考虑使用HGNC ID 和 Symbol做合并！
 target.and.family_targets.lost <- target.and.family_targets[!target.and.family_targets$HGNC.id %in% gtf$HGNC,]
 target.and.family_targets.lost
 # https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:18876
@@ -340,10 +332,10 @@ table(duplicated(targets.gene.unique$Human.Ensembl.Gene))
 targets.gene.unique <- targets.gene.unique[,c("Human.Ensembl.Gene", "HGNC.id", "HGNC.symbol", "Human.Entrez.Gene", "Target.id","Type", "Family.name")]
 colnames(targets.gene.unique) <- c("Ensembl","HGNC", "Symbol", "Entrez", "Target.ID","Type", "Family")
 ```
+
 ```{r}
 Human_GuideToPHARMACOLOGY_Targets <- targets.gene.unique
 usethis::use_data(Human_GuideToPHARMACOLOGY_Targets, overwrite = TRUE)
-# saveRDS(targets.gene.unique,file = "../data/Human_GuideToPHARMACOLOGY_Targets.rds")
 ```
 
 ```{r}
@@ -356,15 +348,10 @@ targets.gene.unique[targets.gene.unique$Target.ID %in% targets.gene.unique$Targe
 ligand.ID.mapping 与 ligand 两个文档内容是一致的； 注意：一个ligand ID可以对应多个基因; 一个基因ID也可以对应多个Ligand ID。
 
 ```{r}
-ligand <- read.csv("../inst/extdata/GuideToPharmacology/ligands.csv.gz", stringsAsFactors = FALSE, skip = 1)
-ligand.ID.mapping <- read.csv("../inst/extdata/GuideToPharmacology/ligand_id_mapping.csv.gz", stringsAsFactors = FALSE, skip = 1)
+ligand <- read.csv("../inst/extdata/GuideToPharmacology/ligands.csv", stringsAsFactors = FALSE, skip = 1)
+ligand.ID.mapping <- read.csv("../inst/extdata/GuideToPharmacology/ligand_id_mapping.csv", stringsAsFactors = FALSE, skip = 1)
+all(ligand.ID.mapping$Ensembl.ID == ligand$Ensembl.ID) # ligand.ID.mapping 与ligand 里的Ensembl.ID是一样的，并且维度也一样。
 
-grch37.gtf <- as.data.frame(rtracklayer::import("../inst/extdata/Ensembl/Human/GRCh37/Homo_sapiens.GRCh37.87.gtf.gz"))
-grch37 <- dplyr::filter(as.data.frame(grch37.gtf), type == "gene") 
-# 新问题： GRCh37 与 GRCh38 ID的对应关系，留给以后解决吧！
-
-all(ligand.ID.mapping$Ensembl.ID == ligand$Ensembl.ID)
-# ligand.ID.mapping 与ligand 里的Ensembl.ID是一样的，并且维度也一样。
 # 提取所有人里的Ligands基因。
 table(ligand.ID.mapping$Type)
 table(duplicated(ligand.ID.mapping$Ligand.id)) # Liand id是没有重复值的！
@@ -372,7 +359,7 @@ table(duplicated(ligand.ID.mapping$Ligand.id)) # Liand id是没有重复值的�
 ligands.id.uniqe <- ligand.ID.mapping[grepl("ENSG", ligand.ID.mapping$Ensembl.ID),c("Ligand.id","Name", "Species" ,"Type","Ensembl.ID")]
 table(ligands.id.uniqe$Type)
 
-# 一个Ligand id 对应多个Ensembl id，并且去除非人基因
+# 一个Ligand id 对应多个Ensembl id，1. 替换分隔符|为;，2.并且去除非人基因
 tmp <- c()
 for (i in ligands.id.uniqe$Ensembl.ID) {
   if(grepl("|", i,fixed = TRUE)){
@@ -386,10 +373,15 @@ ligands.id.uniqe$Ensembl.ID <- tmp
 # 修正Ensembl IDs
 ## 制备old - new name数据库
 ensembl.ids.unique <- unique(unlist(lapply(ligands.id.uniqe$Ensembl.ID, function(x)unlist(strsplit(x, split = ";",fixed = TRUE))))) # 提取所有IDs
-ensembl.ids.unique.lost <- ensembl.ids.unique[!ensembl.ids.unique %in% gtf$Ensembl] # 提取不能被识别的
-grch37.matched.ids <- ensembl.ids.unique.lost[ensembl.ids.unique.lost %in% grch37$gene_id] # 能被Grch37 ID识别的基因
+ensembl.ids.unique.lost <- ensembl.ids.unique[!ensembl.ids.unique %in% gtf$Ensembl] # 提取不能被识别的，共计16条
+
+grch37.gtf <- as.data.frame(rtracklayer::import("../inst/extdata/Ensembl/Human/GRCh37/Homo_sapiens.GRCh37.87.gtf.gz"))
+grch37 <- dplyr::filter(as.data.frame(grch37.gtf), type == "gene")
+# why use grch?
+
+grch37.matched.ids <- ensembl.ids.unique.lost[ensembl.ids.unique.lost %in% grch37$gene_id] # 能被grch37 ID识别的基因，共计8个
 grch37.matched.ids.new <- gtf$Ensembl[match(grch37$gene_name[match(grch37.matched.ids, grch37$gene_id)], gtf$Symbol)]
-ensembl.ids.unique.lost[!ensembl.ids.unique.lost %in% grch37$gene_id] # 不能被Grch37 ID识别的基因
+ensembl.ids.unique.lost[!ensembl.ids.unique.lost %in% grch37$gene_id] # 不能被grch37 ID识别的基因
 ### 人工检索
 manually_checked_ids <- c(ENSG00000167744 = "ENSG00000225950", # NTF4
                           ENSG00000180290 = "ENSG00000125787", # GNRH2
@@ -434,7 +426,6 @@ colnames(ligands.gene.uniqe) <- c("Ensembl","Symbol", "Ligand.ID","Type")
 ```{r}
 Human_GuideToPHARMACOLOGY_LigandsPeptides <- ligands.gene.uniqe
 usethis::use_data(Human_GuideToPHARMACOLOGY_LigandsPeptides, overwrite = TRUE)
-# saveRDS(ligands.gene.uniqe, file = "../data/Human_GuideToPHARMACOLOGY_LigandsPeptides.rds")
 ```
 
 **detailed.endogenous.ligand** 注意有些行的ligand ID是空的
@@ -494,8 +485,8 @@ usethis::use_data(Human_GuideToPHARMACOLOGY_LigandsPeptides, overwrite = TRUE)
 target_ligand：注意，这个表示这个target本来也是一个ligand，但是在这个条目中，他是一个target。
 
 ```{r}
-all.ligands.and.targets.interactions <- read.csv("../inst/extdata/GuideToPharmacology/interactions.csv.gz", stringsAsFactors = FALSE, skip = 1)
-complete.peptide.ligand <-  read.csv("../inst/extdata/GuideToPharmacology/peptides.csv.gz", stringsAsFactors = FALSE, skip = 1)
+all.ligands.and.targets.interactions <- read.csv("../inst/extdata/GuideToPharmacology/interactions.csv", stringsAsFactors = FALSE, skip = 1)
+complete.peptide.ligand <-  read.csv("../inst/extdata/GuideToPharmacology/peptides.csv", stringsAsFactors = FALSE, skip = 1)
 # 只保留人的
 all.interactions.human.targets <- all.ligands.and.targets.interactions[all.ligands.and.targets.interactions$Target.Species == "Human",]
 # 配体与配体的互作？这里不再进行深入探索，以后再说吧！  Target.Ligand 开头的列是啥？
@@ -642,7 +633,6 @@ table(duplicated(interactions$Target.ID))
 
 Human_GuideToPHARMACOLOGY_Interactions_LigandTargetsFull <- interactions
 usethis::use_data(Human_GuideToPHARMACOLOGY_Interactions_LigandTargetsFull, overwrite = TRUE)
-# save(interactions, file = "../data/Human_GuideToPHARMACOLOGY_Interactions-Ligand-Targets-Full.rda", compress = "xz")
 ```
 注意，Human_GuideToPHARMACOLOGY_Interactions-Ligand-Targets-Full.rda收录的Ligand和Targets要多于Human_GuideToPHARMACOLOGY_LigandsPeptides和Human_GuideToPHARMACOLOGY_Targets的！
 
@@ -674,7 +664,6 @@ head(sort(table(interactions.gene$Ligand.Symbol),decreasing = TRUE),30)
 ```{r}
 Human_GuideToPHARMACOLOGY_Interactions_LigandTargetsFull_Expanded <- interactions.gene
 usethis::use_data(Human_GuideToPHARMACOLOGY_Interactions_LigandTargetsFull_Expanded, overwrite = TRUE)
-# save(interactions.gene, file = "../data/Human_GuideToPHARMACOLOGY_Interactions-Ligand-Targets-Full-Expanded.rda", compress = "xz")
 ```
 
 ```{r}
@@ -714,7 +703,7 @@ for (i in 1:nrow(res)) {
 remove.iterms.index <- unname(apply(res != 0, 2, sum) != 1)
 res <- res[remove.iterms.index, remove.iterms.index]
 pdf(file = "./Ligands-Heatmap-By-Shared-Targets.pdf",width = 40,height = 40)
-pheatmap::pheatmap(res)
+print(pheatmap::pheatmap(res))
 dev.off()
 ```
 
@@ -740,7 +729,7 @@ for (i in 1:nrow(res)) {
 remove.iterms.index <- unname(apply(res != 0, 2, sum) != 1)
 res <- res[remove.iterms.index, remove.iterms.index]
 pdf(file = "./Targets-Heatmap-By-Shared-Ligands.pdf",width = 30,height = 30)
-pheatmap::pheatmap(res)
+print(pheatmap::pheatmap(res))
 dev.off()
 ```
 
@@ -768,7 +757,6 @@ targets.full.gene.unique$HGNC <- gtf$Symbol[match(targets.full.gene.unique$Ensem
 ```{r}
 Human_GuideToPHARMACOLOGY_Interactions_OnlyTargetsFull_Expanded <- targets.full.gene.unique
 usethis::use_data(Human_GuideToPHARMACOLOGY_Interactions_OnlyTargetsFull_Expanded, overwrite = TRUE)
-# saveRDS(targets.full.gene.unique,file = "../data/Human_GuideToPHARMACOLOGY_Interactions-Only-Targets-Full-Expanded.rda")
 ```
 
 带full，表示收录的基因数目会更多一些！
@@ -794,8 +782,6 @@ R包：hpar, https://bioconductor.org/packages/release/bioc/vignettes/hpar/inst/
 - 哪些基因有相似的表达pattern
 
 https://www.proteinatlas.org/humanproteome/tissue/tissue+specific
-
-A total of 10986 genes are elevated in at least one of the analyzed tissues of which: 3106 are tissue enriched genes; 1628 are group enriched genes; 6252 are enhanced genes
 
 **癌症当中的表达情况**
 
@@ -823,166 +809,190 @@ Subcellular location data: Subcellular location of proteins based on immunofluor
 
 另外关于这个数据库的免疫组化结果的统计。他们也汇总了一个表格形式的结果。这个结果存在于一个叫做hpar的R语言包当中。这里我们就把癌症所有的数据下载下来了。这样大家如果只是想要知道一个统计结果而不是想要看图片的话，就可以在表格当中直接查找了。
 
+**All genes**
+
+url: https://www.proteinatlas.org/humanproteome/tissue/tissue+specific
 
 ```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/19670-All-Genes.tsv",stringsAsFactors = FALSE)
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/proteinatlas_bb41022d.tsv",stringsAsFactors = FALSE)
 HPA <- HPA[,c("Ensembl","Gene","Uniprot","Protein.class", "Biological.process", "Molecular.function","Disease.involvement",
               "RNA.tissue.specificity","RNA.tissue.distribution","RNA.single.cell.type.specificity", "RNA.single.cell.type.distribution", 
               "RNA.cancer.specificity", "RNA.cancer.distribution", "RNA.brain.regional.specificity",
               "Subcellular.location","Subcellular.main.location","Secretome.location" )]
 colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
+
+table(HPA$HPA.Ensembl %in% gtf$Ensembl) # total 27 entries will be removed
+HPA <- HPA[HPA$HPA.Ensembl %in% gtf$Ensembl,]
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_AllGenes_GO_Disease_Distribution_Location <- HPA
+usethis::use_data(HPA_Human_AllGenes_GO_Disease_Distribution_Location, overwrite = TRUE)
 ```
 
-```{r}
-HPA_Human_19670Genes_GODiseaseDistributionLocation <- HPA
-usethis::use_data(HPA_Human_19670Genes_GODiseaseDistributionLocation, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_19670Genes_GO-Disease-distribution-location.rd")
-```
 
+**Secreted And FDA Approved Drug Targets**
+
+url: https://www.proteinatlas.org/humanproteome/tissue/secretome
+
+also, you can found the predicted proteins by each method in this page.
 
 ```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/102-Genes-with-Secreted-products-from-754-FDA-Approved-Drug-Targets.tsv",stringsAsFactors = FALSE)
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_FDA.tsv",stringsAsFactors = FALSE)
 HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
 colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
 
-HPA_Human_102Genes_SecretedAndFDAApprovedDrugTargets <- HPA
-usethis::use_data(HPA_Human_102Genes_SecretedAndFDAApprovedDrugTargets, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_102Genes_Secreted-and-has-FDA-Approved-Drug-Targets.rds")
+table(HPA$HPA.Ensembl %in% gtf$Ensembl)
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_FDA_Approved_Secreted_Genes <- HPA
+usethis::use_data(HPA_Human_FDA_Approved_Secreted_Genes, overwrite = TRUE)
 ```
+### Protein classes
+
+url: https://www.proteinatlas.org/humanproteome/proteinclasses
+
+**Predicted intracellular proteins**
 
 ```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/12631-Predicted-intracellular-genes-without-any-secreted-or-membrane-bound-protein-product.tsv",stringsAsFactors = FALSE)
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_Predicted_intracellular_proteins.tsv",stringsAsFactors = FALSE)
 HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
 colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
 
-HPA_Human_12631Genes_NotSecretedOrMembraneBound <- HPA
-usethis::use_data(HPA_Human_12631Genes_NotSecretedOrMembraneBound, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_12631Genes_Not-secreted-or-membrane-bound.rds")
+table(HPA$HPA.Ensembl %in% gtf$Ensembl) # total 21 entries will be removed
+HPA <- HPA[HPA$HPA.Ensembl %in% gtf$Ensembl,]
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_intracellular_Genes <- HPA
+usethis::use_data(HPA_Human_intracellular_Genes, overwrite = TRUE)
 ```
 
+**Predicted secreted proteins**
+
 ```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/1708-Predicted-genes-have-at-least-one-secreted-protein-product.tsv",stringsAsFactors = FALSE)
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_Predicted_secreted_proteins.tsv",stringsAsFactors = FALSE)
 HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
 colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
 
-HPA_Human_1708Genes_Secreted <- HPA
-usethis::use_data(HPA_Human_1708Genes_Secreted, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_1708Genes_Secreted.rds")
+table(HPA$HPA.Ensembl %in% gtf$Ensembl) # total 1 entries will be removed
+HPA <- HPA[HPA$HPA.Ensembl %in% gtf$Ensembl,]
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_Predicted_Secreted_Genes <- HPA
+usethis::use_data(HPA_Human_Predicted_Secreted_Genes, overwrite = TRUE)
+```
+**Predicted membrane proteins**
+
+```{r}
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_Predicted_membrane_proteins.tsv",stringsAsFactors = FALSE)
+HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
+colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
+
+table(HPA$HPA.Ensembl %in% gtf$Ensembl) # total 5 entries will be removed
+HPA <- HPA[HPA$HPA.Ensembl %in% gtf$Ensembl,]
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_Predicted_membrane_Genes <- HPA
+usethis::use_data(HPA_Human_Predicted_membrane_Genes, overwrite = TRUE)
+```
+**FDA approved drug targets**
+
+```{r}
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_FDA_approved_drug_targets.tsv",stringsAsFactors = FALSE)
+HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
+colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
+
+table(HPA$HPA.Ensembl %in% gtf$Ensembl)
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_FDA_approved_drug_target_genes <- HPA
+usethis::use_data(HPA_Human_FDA_approved_drug_target_genes, overwrite = TRUE)
+```
+**CD markers**
+
+```{r}
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_CDmarkers.tsv",stringsAsFactors = FALSE)
+HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
+colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
+
+table(HPA$HPA.Ensembl %in% gtf$Ensembl)
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_CDmarker_Genes <- HPA
+usethis::use_data(HPA_Human_CDmarker_Genes, overwrite = TRUE)
+```
+**GPCRs**
+
+```{r}
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_G-protein.tsv",stringsAsFactors = FALSE)
+HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
+colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
+
+table(HPA$HPA.Ensembl %in% gtf$Ensembl)
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_GPCRs_Genes <- HPA
+usethis::use_data(HPA_Human_GPCRs_Genes, overwrite = TRUE)
+```
+**Plasma proteins**
+
+```{r}
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_Plasma.tsv",stringsAsFactors = FALSE)
+HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
+colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
+
+table(HPA$HPA.Ensembl %in% gtf$Ensembl)
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_Plasma_Genes <- HPA
+usethis::use_data(HPA_Human_Plasma_Genes, overwrite = TRUE)
 ```
 
+**Transporters**
+
 ```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/189-Predicted-genes-with-both-secreted-and-membrane-bound-isoforms.tsv",stringsAsFactors = FALSE)
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_Transporters.tsv",stringsAsFactors = FALSE)
 HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
 colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
 
-HPA_Human_1708Genes_BothSecretedAndMembraneBound<- HPA
-usethis::use_data(HPA_Human_1708Genes_BothSecretedAndMembraneBound, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_1708Genes_Both-Secreted-and-membrane-bound.rds")
+table(HPA$HPA.Ensembl %in% gtf$Ensembl) # total 1 entries will be removed
+HPA <- HPA[HPA$HPA.Ensembl %in% gtf$Ensembl,]
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_Transporter_Genes <- HPA
+usethis::use_data(HPA_Human_Transporter_Genes, overwrite = TRUE)
+```
+**Voltage-gated ion channels**
+
+```{r}
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_Voltage-gated.tsv",stringsAsFactors = FALSE)
+HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
+colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
+
+table(HPA$HPA.Ensembl %in% gtf$Ensembl) 
+colnames(HPA)[1] <- "Ensembl"
+
+HPA_Human_Voltage_Gated_Ion_Channel_Genes <- HPA
+usethis::use_data(HPA_Human_Voltage_Gated_Ion_Channel_Genes, overwrite = TRUE)
 ```
 
+**Transcription Factors**
 
 ```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/429-Genes-with-Membrane-bound-products-from-754-FDA-Approved-Drug-Targets.tsv",stringsAsFactors = FALSE)
+HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/protein_class_Transcription.tsv",stringsAsFactors = FALSE)
 HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
 colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
 
-HPA_Human_429Genes_MembraneBoundAndHasFDAApprovedDrugTargets<- HPA
-usethis::use_data(HPA_Human_429Genes_MembraneBoundAndHasFDAApprovedDrugTargets, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_429Genes_membrane-bound-and-has-FDA-Approved-Drug-Targets.rds")
-```
+table(HPA$HPA.Ensembl %in% gtf$Ensembl)
 
-
-```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/5520-Predicted-genes-have-at-least-one-membrane-bound-protein-product.tsv",stringsAsFactors = FALSE)
-HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
-colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
-
-HPA_Human_5520Genes_MembraneBound <- HPA
-usethis::use_data(HPA_Human_5520Genes_MembraneBound, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_5520Genes_membrane-bound.rds")
-```
-
-
-```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/754-FDA-Approved-Drug-Targets.tsv",stringsAsFactors = FALSE)
-HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
-colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
-
-HPA_Human_754Genes_FDAApprovedDrugTargets <- HPA
-usethis::use_data(HPA_Human_754Genes_FDAApprovedDrugTargets, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_754Genes_FDA-Approved-drug-targets.rds")
-```
-
-
-```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/protein_class_CD.tsv",stringsAsFactors = FALSE)
-HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
-colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
-
-HPA_Human_ProteinClass_CD <- HPA
-usethis::use_data(HPA_Human_ProteinClass_CD, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_ProteinClass-CD.rds")
-```
-
-```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/protein_class_GPCRs.tsv",stringsAsFactors = FALSE)
-HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
-colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
-
-HPA_Human_ProteinClass_GPCR <- HPA
-usethis::use_data(HPA_Human_ProteinClass_GPCR, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_ProteinClass-GPCR.rds")
-```
-
-
-```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/protein_class_Plasma.tsv",stringsAsFactors = FALSE)
-HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
-colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
-
-HPA_Human_ProteinClass_Plasma <- HPA
-usethis::use_data(HPA_Human_ProteinClass_Plasma, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_ProteinClass-Plasma.rds")
-```
-
-
-```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/protein_class_Transporters.tsv",stringsAsFactors = FALSE)
-HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
-colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
-
-HPA_Human_ProteinClass_Transporters <- HPA
-usethis::use_data(HPA_Human_ProteinClass_Transporters, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_ProteinClass-Transporters.rds")
-```
-
-
-```{r}
-HPA <- read.delim("../inst/extdata/THE-HUMAN-PROTEIN-ATLAS/Groups/protein_class_Voltage-gated-ion-channels.tsv",stringsAsFactors = FALSE)
-HPA <- HPA[,c("Ensembl","Gene","Uniprot")]
-colnames(HPA) <- paste("HPA.",colnames(HPA),sep = "")
-colnames(HPA)[1] <- "Ensembl.Version109"
-
-HPA_Human_ProteinClass_VoltageGatedIonChannels <- HPA
-usethis::use_data(HPA_Human_ProteinClass_VoltageGatedIonChannels, overwrite = TRUE)
-# saveRDS(HPA,file = "../data/HPA_Human_ProteinClass-Voltage-gated-ion-channels.rds")
+HPA_Human_ProteinClass_TranscriptionFactors <- HPA
+usethis::use_data(HPA_Human_ProteinClass_TranscriptionFactors, overwrite = TRUE)
 ```
 
 ## UniProt
 
 similar Protein family
+
+数据是2022年的，没有找到下载链接！！！
 
 ```{r}
 con <- file("../inst/extdata/UniProt/UniProtKB/ProteinFamily/similar-Protein-family.txt", "r")
@@ -1015,7 +1025,6 @@ close(con)
 
 UniProt_ProteinFamily_AllSpecies <- res
 usethis::use_data(UniProt_ProteinFamily_AllSpecies, overwrite = TRUE)
-# saveRDS(res, file = "../data/UniProt_ProteinFamily-All-Species.rds")
 ```
 
 
@@ -1034,25 +1043,24 @@ group_by(protein.human, Gene) %>%
 # write.csv(protein.human, file = "Uniprot-Protein-class-for-HGNC-id-mapping.csv")
 # res.map <- read.csv("./hgnc-symbol-check.csv",stringsAsFactors = FALSE)
 # table(res.map$Match.type)
-protein.human$Ensembl.Added <- gtf$Ensembl[match(protein.human$Protein, gtf$UniProt)]
-protein.human$Symbol.Added <- gtf$Symbol[match(protein.human$Protein, gtf$UniProt)]
+protein.human$Ensembl.Latest <- gtf$Ensembl[match(protein.human$Protein, gtf$UniProt)]
+protein.human$Symbol.Latest <- gtf$Symbol[match(protein.human$Protein, gtf$UniProt)]
 ```
 
 ```{r}
 UniProt_ProteinFamily_Human <- protein.human
 usethis::use_data(UniProt_ProteinFamily_Human, overwrite = TRUE)
-# saveRDS(protein.human, file =  "../data/UniProt_ProteinFamily-Human.rds")
 ```
 
 
-## CellChat
+## CellChat V2
 
 github: https://github.com/jinworks/CellChat
 
 url: https://github.com/jinworks/CellChat/tree/main/data
 
 ```{r}
-load("../inst/extdata/CellChat/CellChatDB.human.rda")
+load("../inst/extdata/CellChatV2/CellChatDB.human.rda")
 interactions <- CellChatDB.human$interaction
 rownames(interactions) <- NULL
 interactions$version <- NULL
@@ -1077,41 +1085,40 @@ interactions <- interactions[-which(interactions$ligand.symbol == "HLA-DRB3"),] 
 interactions <- interactions[-which(interactions$ligand.symbol == "HLA-DRB4"),] # ENSG00000227357,  not existed in gtf，可惜，只能丢弃！
 interactions$ligand.symbol[interactions$ligand.symbol == "Cd99"]  <- "CD99" 
 
-interactions$receptor.Ensembl.Added <- update_IDs(old = interactions$receptor.symbol, db = gtf, from = "Symbol", to = "Ensembl", split = ",", fixed = TRUE)
-interactions$ligand.Ensembl.Added <- update_IDs(old = interactions$ligand.symbol, db = gtf, from = "Symbol", to = "Ensembl", split = ",", fixed = TRUE)
+interactions$receptor.Ensembl.Latest <- update_IDs(old = interactions$receptor.symbol, db = gtf, from = "Symbol", to = "Ensembl", split = ",", fixed = TRUE)
+interactions$ligand.Ensembl.Latest <- update_IDs(old = interactions$ligand.symbol, db = gtf, from = "Symbol", to = "Ensembl", split = ",", fixed = TRUE)
 ```
 
 
 ```{r}
-CellChat_Human_LigandReceptorsInteractions <- interactions
-usethis::use_data(CellChat_Human_LigandReceptorsInteractions, overwrite = TRUE)
-# saveRDS(interactions, file = "../data/CellChat_Human_LigandReceptors-Interactions.rds")
+CellChat_Human_Ligand_Receptors_Interactions <- interactions
+usethis::use_data(CellChat_Human_Ligand_Receptors_Interactions, overwrite = TRUE)
 ```
 
 
 ```{r}
-lrs <- interactions[,c("ligand.Ensembl.Added", "receptor.Ensembl.Added", "pathway_name", "interaction_name_2")]
+lrs <- interactions[,c("ligand.Ensembl.Latest", "receptor.Ensembl.Latest", "pathway_name", "interaction_name_2")]
 colnames(lrs)[4] <- "interaction"
 
 receptor.sub <- lrs[,c(2,3,4)]
-table(duplicated(receptor.sub$receptor.Ensembl.Added))
+table(duplicated(receptor.sub$receptor.Ensembl.Latest))
 
-receptor.sub <- Reduce(rbind, lapply(split(receptor.sub, f = receptor.sub$receptor.Ensembl.Added),function(x){
+receptor.sub <- Reduce(rbind, lapply(split(receptor.sub, f = receptor.sub$receptor.Ensembl.Latest),function(x){
   x$pathway_name <- paste0(unique(x$pathway_name),collapse = ";")
   x$interaction <- paste0(unique(x$interaction),collapse = ";")
   return(x[1,])
 }))
 
-receptor.sub <- Reduce(rbind, lapply(split(receptor.sub, f = receptor.sub$receptor.Ensembl.Added),function(x){
-  receptors <- unlist(strsplit(x$receptor.Ensembl.Added,split = ";"))
+receptor.sub <- Reduce(rbind, lapply(split(receptor.sub, f = receptor.sub$receptor.Ensembl.Latest),function(x){
+  receptors <- unlist(strsplit(x$receptor.Ensembl.Latest,split = ";"))
   x <- x[rep(1,length(receptors)),]
-  x$receptor.Ensembl.Added <- receptors
+  x$receptor.Ensembl.Latest <- receptors
   return(x)
 }))
 
 receptor.sub <- receptor.sub[!duplicated(receptor.sub),]
 
-receptor.sub <- Reduce(rbind, lapply(split(receptor.sub, f = receptor.sub$receptor.Ensembl.Added),function(x){
+receptor.sub <- Reduce(rbind, lapply(split(receptor.sub, f = receptor.sub$receptor.Ensembl.Latest),function(x){
   x$pathway_name <- paste0(unique(x$pathway_name),collapse = ";")
   x$interaction <- paste0(unique(x$interaction),collapse = ";")
   return(x[1,])
@@ -1124,24 +1131,24 @@ usethis::use_data(CellChat_Human_Receptors, overwrite = TRUE)
 
 
 ligand.sub <- lrs[,c(1,3,4)]
-table(duplicated(ligand.sub$ligand.Ensembl.Added))
+table(duplicated(ligand.sub$ligand.Ensembl.Latest))
 
-ligand.sub <- Reduce(rbind, lapply(split(ligand.sub, f = ligand.sub$ligand.Ensembl.Added),function(x){
+ligand.sub <- Reduce(rbind, lapply(split(ligand.sub, f = ligand.sub$ligand.Ensembl.Latest),function(x){
   x$pathway_name <- paste0(unique(x$pathway_name),collapse = ";")
   x$interaction <- paste0(unique(x$interaction),collapse = ";")
   return(x[1,])
 }))
 
-ligand.sub <- Reduce(rbind, lapply(split(ligand.sub, f = ligand.sub$ligand.Ensembl.Added),function(x){
-  receptors <- unlist(strsplit(x$ligand.Ensembl.Added,split = ";"))
+ligand.sub <- Reduce(rbind, lapply(split(ligand.sub, f = ligand.sub$ligand.Ensembl.Latest),function(x){
+  receptors <- unlist(strsplit(x$ligand.Ensembl.Latest,split = ";"))
   x <- x[rep(1,length(receptors)),]
-  x$ligand.Ensembl.Added <- receptors
+  x$ligand.Ensembl.Latest <- receptors
   return(x)
 }))
 
 ligand.sub <- ligand.sub[!duplicated(ligand.sub),]
 
-ligand.sub <- Reduce(rbind, lapply(split(ligand.sub, f = ligand.sub$ligand.Ensembl.Added),function(x){
+ligand.sub <- Reduce(rbind, lapply(split(ligand.sub, f = ligand.sub$ligand.Ensembl.Latest),function(x){
   x$pathway_name <- paste0(unique(x$pathway_name),collapse = ";")
   x$interaction <- paste0(unique(x$interaction),collapse = ";")
   return(x[1,])
@@ -1149,7 +1156,6 @@ ligand.sub <- Reduce(rbind, lapply(split(ligand.sub, f = ligand.sub$ligand.Ensem
 
 CellChat_Human_Ligands <- ligand.sub
 usethis::use_data(CellChat_Human_Ligands, overwrite = TRUE)
-# saveRDS(ligand.sub, file = "../data/CellChat_Human_Ligands.rds")
 ```
 
 ## CellPhone DB V5
@@ -1245,7 +1251,6 @@ interactions <- interactions[,c("Ligand.Symbol", "Receptor.Symbol", "Ligand.Ense
 
 CellPhoneDB_Human_Interactions <- interactions
 usethis::use_data(CellPhoneDB_Human_Interactions, overwrite = TRUE)
-# saveRDS(interactions, file = "../data/CellPhoneDB_Human_Interactions.rds")
 ```
 
 ```{r}
@@ -1266,7 +1271,6 @@ receptors$Receptor.Symbol.Latest <- gtf$Symbol[match(receptors$Receptor.Ensembl.
 
 CellPhoneDB_Human_Receptors <- receptors
 usethis::use_data(CellPhoneDB_Human_Receptors, overwrite = TRUE)
-# saveRDS(receptors, file = "../data/CellPhoneDB_Human_Receptors.rds")
 ```
 
 
@@ -1289,7 +1293,6 @@ ligands$Ligand.Symbol.Latest <- gtf$Symbol[match(ligands$Ligand.Ensembl.Latest, 
 
 CellPhoneDB_Human_Ligands <- ligands
 usethis::use_data(CellPhoneDB_Human_Ligands, overwrite = TRUE)
-# saveRDS(ligands, file = "../data/CellPhoneDB_Human_Ligands.rds")
 ```
 
 ## CellTalkDB
@@ -1310,7 +1313,6 @@ res <- lrs.map$matched
 
 CellTalkDB_Human_Interactions <- res
 usethis::use_data(CellTalkDB_Human_Interactions, overwrite = TRUE)
-# saveRDS(res, file = "../data/CellTalkDB_Human_Interactions.rds")
 ```
 
 
@@ -1324,24 +1326,29 @@ usethis::use_data(CellTalkDB_Human_Interactions, overwrite = TRUE)
 
 参考：[9.10 Parsing huge Entrez XML files](https://biopython-cn.readthedocs.io/zh-cn/latest/en/chr09.html)
 
-install ncbi-tools-bin, and trans ags to xml file:
+**install ncbi-tools-bin, and trans ags to xml file:**
 
-``sudo apt-get install ncbi-tools-bin``
-``gunzip Homo_sapiens.ags.gz``
-``gene2xml -b T  -i Homo_sapiens.ags -o Homo_sapiens.xml``
+```{bash eval=FALSE}
+# sudo apt-get install ncbi-tools-bin
+gunzip Homo_sapiens.ags.gz
+gene2xml -b T  -i Homo_sapiens.ags -o Homo_sapiens.xml
+```
 
 **提取基因信息**
 
-``cat Homo_sapiens.xml | grep "<Gene-track_geneid>\|<Gene-ref_locus>\|<Entrezgene_summary>" > subset.txt``
-去掉行前的空格
-``sed  -i 's/^[ ]*//g' subset.txt``
-编辑subset.txt添加列名为con
+```{bash eval=FALSE}
+cat Homo_sapiens.xml | grep "<Gene-track_geneid>\|<Gene-ref_locus>\|<Entrezgene_summary>" > subset.txt
+# 去掉行前的空格
+sed  -i 's/^[ ]*//g' subset.txt
+```
 
-然后使用R语言提取基因信息，具体流程请见："inst/extdata/NCBI/Human_Gene_Summary/extract-gene-summary.md"文件。
+然后使用R语言提取基因信息，具体流程请见："inst/extdata/NCBI/Human_Gene_Summary/extract-gene-summary.md"文件 or 'prepare-data.R'。
 
 ```{r }
 load("../data/GENCODE_Human_Genes.rda")
 ```
+
+# 问题是： 很多基因不与GENCODE有overlap
 
 ```{r}
 ncbi <- readRDS("../inst/extdata/NCBI/Human_Gene_Summary/NCBI_gene_summary_from_ASN_filtered.rds")
@@ -1353,6 +1360,7 @@ table(GENCODE_Human_Genes$Ensembl %in% ncbi$Ensembl)
 table(GENCODE_Human_Genes$Ensembl %in% ncbi$Ensembl.By.OrgHSegdb)
 table(GENCODE_Human_Genes$HGNC %in% gsub("^HGNC:", "",ncbi$HGNC))
 ```
+
 ```{r}
 NCBI_Human_GeneSummary <- ncbi
 usethis::use_data(NCBI_Human_GeneSummary, overwrite = TRUE)
@@ -1362,8 +1370,9 @@ usethis::use_data(NCBI_Human_GeneSummary, overwrite = TRUE)
  
 下载蛋白的注释信息，具体参考："inst/extdata/UniProt/GeneFunction/Human/提取-UniProt-Protein-summary.md"
 
+
 ```{r}
-uniprot <- read.delim("../inst/extdata/UniProt/GeneFunction/Human/uniprotkb_AND_model_organism_9606_2023_07_12.tsv",stringsAsFactors = FALSE)
+uniprot <- read.delim("../inst/extdata/UniProt/GeneFunction/Human/uniprotkb_Human_AND_reviewed_true_AND_m_2025_04_15.tsv.gz",stringsAsFactors = FALSE)
 uniprot <- uniprot[uniprot$Reviewed == "reviewed",]
 uniprot <- uniprot[uniprot$Function..CC. != "",]
 uniprot <- uniprot[uniprot$Gene.Names..primary. != "",]
@@ -1389,10 +1398,10 @@ colnames(uniprot) <- c("Entry", "Entry.Name", "Protein.names", "FunctionCC" ,"Pr
 table(uniprot$Primary.Gene.Names %in% GENCODE_Human_Genes$Symbol)
 table(duplicated(uniprot$Primary.Gene.Names))
 ```
-问题是，有少量基因是重复的！
+**问题是，有2305个基因名是重复的！**
 
 ```{r}
-uniprot$Ensembl.Added <- GENCODE_Human_Genes$Ensembl[match(uniprot$Primary.Gene.Names, GENCODE_Human_Genes$Symbol)]
+uniprot$Ensembl.Latest <- GENCODE_Human_Genes$Ensembl[match(uniprot$Primary.Gene.Names, GENCODE_Human_Genes$Symbol)]
 UniProt_Human_GeneFunction <- uniprot
 usethis::use_data(UniProt_Human_GeneFunction, overwrite = TRUE)
 ```
@@ -1428,15 +1437,13 @@ for (i in unique(df.sub$Aspect)) {
 ```
 
 ```{r}
-# saveRDS(res,file = "temp.rds")
-# run codes bellow under a server!
-# results <- merge(res$MolecularFunction, res$CellularComponent, all= TRUE, by = "Symbol")
-# results <- merge(results, res$BiologicalProcess, all= TRUE, by = "Symbol")
-# results[is.na(results)] <- "-"
-GENEONTOLOGY_Human <- readRDS("../inst/extdata/GENEONTOLOGY/go.rds")
+results <- merge(res$MolecularFunction, res$CellularComponent, all= TRUE, by = "Symbol")
+results <- merge(results, res$BiologicalProcess, all= TRUE, by = "Symbol")
+results[is.na(results)] <- "-"
+GENEONTOLOGY_Human <- results
 load("../data/GENCODE_Human_Genes.rda")
 table(GENEONTOLOGY_Human$Symbol %in% GENCODE_Human_Genes$Symbol)
-GENEONTOLOGY_Human$Ensembl.Added <- GENCODE_Human_Genes$Ensembl[match(GENEONTOLOGY_Human$Symbol, GENCODE_Human_Genes$Symbol)]
+GENEONTOLOGY_Human$Ensembl.Latest <- GENCODE_Human_Genes$Ensembl[match(GENEONTOLOGY_Human$Symbol, GENCODE_Human_Genes$Symbol)]
 usethis::use_data(GENEONTOLOGY_Human, overwrite = TRUE)
 ```
 
