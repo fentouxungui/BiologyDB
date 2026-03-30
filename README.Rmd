@@ -60,17 +60,18 @@ install_github("fentouxungui/BiologyDBLight")
 ## 数据
 
 ```{r example}
-library(BiologyDB)
+library(BiologyDBLight)
 d <- data(package = "BiologyDB")
-d$results[,"Item"]
+all_data <- d$results[,"Item"]
+print(all_data)
 ```
-
-## A small case
 
 ```{r}
-
+for (i in all_data) {
+  print(paste0( paste0(rep('#', 20), collapse = ''), '   ',i,  '   ',paste0(rep('#', 20), collapse = '')))
+  print(str(get(i)))
+}
 ```
-
 
 ## 数据整理过程
 

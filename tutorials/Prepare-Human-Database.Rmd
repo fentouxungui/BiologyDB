@@ -1024,6 +1024,8 @@ while(length(line) != 0) {
 close(con)
 
 UniProt_ProteinFamily_AllSpecies <- res
+UniProt_ProteinFamily_AllSpecies <- Reduce(rbind, UniProt_ProteinFamily_AllSpecies)
+table(UniProt_ProteinFamily_AllSpecies$family)
 usethis::use_data(UniProt_ProteinFamily_AllSpecies, overwrite = TRUE)
 ```
 

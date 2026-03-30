@@ -83,23 +83,26 @@ usethis::use_data(Flybase_Fly_Genes, overwrite = TRUE)
 https://ftp.flybase.net/releases/current/precomputed_files/genes/
 
 ```{r}
-df <- read.delim("../inst/extdata/Flybase/Summary/best_gene_summary_fb_2025_01.tsv.gz",stringsAsFactors = FALSE)
+df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/best_gene_summary_fb_2025_01.tsv.gz",skip = 8))
 head(df)
+colnames(df)[1] <- 'FBgn_ID'
 table(df$FBgn_ID %in% gtf$Ensembl)
 Flybase_Fly_BestGeneSummary <- df
 usethis::use_data(Flybase_Fly_BestGeneSummary, overwrite = TRUE)
 ```
 
 ```{r}
-df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/gene_snapshots_fb_2025_01.tsv.gz"))
+df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/gene_snapshots_fb_2025_01.tsv.gz",skip = 4))
 head(df)
+colnames(df)[1] <- 'FBgn_ID'
 table(df$FBgn_ID %in% gtf$Ensembl)
 Flybase_Fly_GeneSnapshots <- df
 usethis::use_data(Flybase_Fly_GeneSnapshots, overwrite = TRUE)
 ```
 ```{r}
-df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/automated_gene_summaries.tsv.gz"))
+df <- as.data.frame(readr::read_tsv("../inst/extdata/Flybase/Summary/automated_gene_summaries.tsv.gz", skip = 1))
 head(df)
+colnames(df) <- c('FBgn_ID', 'FlybaseAutoSummary')
 table(df$FBgn_ID %in% gtf$Ensembl)
 Flybase_Fly_AutomatedGeneSummary <- df
 usethis::use_data(Flybase_Fly_AutomatedGeneSummary, overwrite = TRUE)
